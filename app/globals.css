@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 29%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 29%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 29%;
+ 
+    --primary: 217 39% 20%;
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 174 64% 45%;
+    --secondary-foreground: 0 0% 100%;
+ 
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 45%;
+ 
+    --accent: 6 100% 68%;
+    --accent-foreground: 0 0% 100%;
+ 
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 217 39% 20%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 217 39% 20%;
+    --foreground: 0 0% 98%;
+ 
+    --card: 217 39% 20%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 217 39% 20%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 0 0% 98%;
+    --primary-foreground: 217 39% 20%;
+ 
+    --secondary: 174 64% 45%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 217 39% 25%;
+    --muted-foreground: 0 0% 63%;
+ 
+    --accent: 6 100% 68%;
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+ 
+    --border: 217 39% 25%;
+    --input: 217 39% 25%;
+    --ring: 0 0% 83%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-montserrat font-bold;
+  }
+  code {
+    @apply font-jetbrains;
+  }
+}
