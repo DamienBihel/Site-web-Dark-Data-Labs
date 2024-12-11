@@ -45,28 +45,42 @@ export function ContactForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true)
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
+      
+      // Créer le corps du message
+      const emailBody = `
+Nouvelle demande de contact
 
-      if (!response.ok) {
-        throw new Error("Une erreur est survenue")
-      }
+Nom: ${values.name}
+Email: ${values.email}
+Téléphone: ${values.phone || "Non renseigné"}
+Entreprise: ${values.company}
+Taille de l'entreprise: ${values.size}
+Budget: ${values.budget}
+Source: ${values.source}
+
+Message:
+${values.message}
+      `.trim()
+
+      // Encoder les paramètres pour le lien mailto
+      const mailtoLink = `mailto:damien.bihel@darkdatalabs.fr?subject=${encodeURIComponent(
+        `Nouvelle demande de contact de ${values.name} - ${values.company}`
+      )}&body=${encodeURIComponent(emailBody)}`
+
+      // Ouvrir le client mail
+      window.location.href = mailtoLink
 
       toast({
-        title: "Message envoyé !",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+        title: "Redirection vers votre client mail",
+        description: "Vous allez être redirigé vers votre client mail pour envoyer votre message.",
       })
 
+      // Réinitialiser le formulaire
       form.reset()
     } catch (error) {
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message.",
+        description: "Une erreur est survenue. Veuillez réessayer.",
         variant: "destructive"
       })
     } finally {
