@@ -7,7 +7,7 @@ import { Expertise } from "./expertise"
 import { Values } from "./values"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { ArrowRight, Download } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 export function About() {
   return (
@@ -49,12 +49,6 @@ export function About() {
               <Link href="/contact">
                 Découvrez comment nous pouvons collaborer
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/guide-data-pme.pdf">
-                Téléchargez mon guide Data Pour PME
-                <Download className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>
