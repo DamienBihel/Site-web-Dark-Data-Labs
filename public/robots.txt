@@ -1,0 +1,6 @@
+# https://darkdatalabs.netlify.app/robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://darkdatalabs.netlify.app/sitemap.xml
