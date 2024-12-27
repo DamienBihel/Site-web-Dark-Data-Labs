@@ -10,12 +10,6 @@
 │
 ├── components/            # Composants React
 │   ├── ui/               # Composants UI réutilisables
-│   │   ├── button/      # Boutons et contrôles
-│   │   ├── input/       # Champs de saisie
-│   │   ├── dialog/      # Modales et popups
-│   │   └── navigation/  # Composants de navigation
-│   │       ├── breadcrumb/   # Fil d'Ariane
-│   │       └── pagination/   # Système de pagination
 │   ├── layout/           # Composants de mise en page
 │   └── sections/         # Sections de pages
 │
@@ -23,11 +17,6 @@
 │   └── utils.ts         # Fonctions utilitaires
 │
 ├── hooks/               # Custom React hooks
-│
-├── __tests__/           # Tests unitaires et d'intégration
-│   ├── unit/           # Tests unitaires
-│   └── integration/    # Tests d'intégration
-│       └── navigation/ # Tests des composants de navigation
 │
 └── public/             # Assets statiques
 ```
@@ -65,27 +54,6 @@
    - Chargement dynamique des composants
    - Optimisation des images
    - Minimisation du bundle
-
-## Composants Majeurs
-
-### Navigation
-- **Breadcrumb** : Navigation hiérarchique
-  - Gestion des segments dynamiques
-  - Support du responsive design
-  - Accessibilité ARIA
-
-- **PaginationSystem** : Système de pagination avancé
-  - Navigation par page
-  - Sélection directe de page
-  - Conservation des filtres
-  - Support des états de chargement
-  - Attributs ARIA pour l'accessibilité
-
-### Interface Utilisateur
-- **Button** : Boutons personnalisables
-- **Input** : Champs de saisie
-- **Card** : Conteneurs de contenu
-- **Dialog** : Fenêtres modales
 
 ## Maintenance
 

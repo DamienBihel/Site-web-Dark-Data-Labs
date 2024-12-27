@@ -1,17 +1,9 @@
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-/**
- * Button variants configuration
- * @property default - Primary action button
- * @property destructive - For dangerous or destructive actions
- * @property outline - Bordered button with transparent background
- * @property secondary - Less prominent actions
- * @property ghost - Minimal visual style
- * @property link - Appears as a text link
- */
+import { cn } from '@/lib/utils';
+
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
@@ -39,77 +31,26 @@ const buttonVariants = cva(
       size: 'default',
     },
   }
-)
-
-export type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>
-export type ButtonSize = NonNullable<VariantProps<typeof buttonVariants>['size']>
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  /**
-   * If true, the button will be rendered as a child component
-   */
-  asChild?: boolean
-  /**
-   * Loading state of the button
-   */
-  isLoading?: boolean
-  /**
-   * Icon to show when loading
-   */
-  loadingIcon?: React.ReactNode
-  /**
-   * Text to show when loading
-   */
-  loadingText?: string
+  asChild?: boolean;
 }
 
-/**
- * Button component with multiple variants and sizes
- * 
- * @example
- * ```tsx
- * <Button variant="default" size="default">
- *   Click me
- * </Button>
- * ```
- */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ 
-    className, 
-    variant, 
-    size, 
-    asChild = false,
-    isLoading = false,
-    loadingIcon,
-    loadingText,
-    disabled,
-    children,
-    ...props 
-  }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    const isDisabled = disabled || isLoading
-
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button';
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        disabled={isDisabled}
         {...props}
-      >
-        {isLoading ? (
-          <>
-            {loadingIcon}
-            {loadingText || children}
-          </>
-        ) : (
-          children
-        )}
-      </Comp>
-    )
+      />
+    );
   }
-)
-Button.displayName = 'Button'
+);
+Button.displayName = 'Button';
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

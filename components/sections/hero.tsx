@@ -3,10 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ParticlesBackground } from "@/components/particles-background"
-import { EnhancedImage } from "@/components/ui/enhanced-image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { OptimizedSection } from "./OptimizedSection"
 
 const container = {
   hidden: { opacity: 0 },
@@ -27,22 +25,7 @@ export function Hero() {
   return (
     <section className="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden bg-gradient-to-br from-primary to-primary/80">
       <ParticlesBackground />
-      
-      {/* Image d'arrière-plan optimisée */}
-      <div className="absolute inset-0 z-0">
-        <EnhancedImage
-          src="/images/hero-background.jpg"
-          alt="Hero background"
-          width={1920}
-          height={1080}
-          priority={true}
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0fHRsdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/2wBDAR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-        />
-      </div>
-
-      <OptimizedSection priority="high" className="container py-16 sm:py-24 relative z-10">
+      <div className="container py-16 sm:py-24 relative z-10">
         <motion.div
           variants={container}
           initial="hidden"
@@ -98,7 +81,7 @@ export function Hero() {
             </Button>
           </motion.div>
         </motion.div>
-      </OptimizedSection>
+      </div>
     </section>
   )
 }

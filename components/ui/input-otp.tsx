@@ -17,7 +17,6 @@ const InputOTP = React.forwardRef<
       containerClassName
     )}
     className={cn('disabled:cursor-not-allowed', className)}
-    data-testid="input-otp-container"
     {...props}
   />
 ));
