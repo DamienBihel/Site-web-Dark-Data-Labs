@@ -26,6 +26,12 @@ const contactInfo = [
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle")
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -33,16 +39,39 @@ export function Contact() {
     setFormStatus("idle")
 
     try {
-      // TODO: Implémenter l'envoi du formulaire
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de l\'envoi')
+      }
+
       setFormStatus("success")
-      // Reset form
-      (e.target as HTMLFormElement).reset()
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        message: ''
+      })
     } catch (error) {
+      console.error('Erreur:', error)
       setFormStatus("error")
     }
 
     setIsSubmitting(false)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
   return (
@@ -116,6 +145,9 @@ export function Contact() {
                   <Input
                     required
                     type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     placeholder="John"
                     className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
                   />
@@ -127,6 +159,9 @@ export function Contact() {
                   <Input
                     required
                     type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                     placeholder="Doe"
                     className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
                   />
@@ -140,6 +175,9 @@ export function Contact() {
                 <Input
                   required
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="john@example.com"
                   className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
                 />
@@ -151,6 +189,9 @@ export function Contact() {
                 </label>
                 <Textarea
                   required
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Décrivez vos idées ou vos besoins spécifiques."
                   className="min-h-[150px] bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
                 />

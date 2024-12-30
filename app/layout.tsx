@@ -27,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Dark Data Labs - Transform Your Data into Measurable Growth',
+  title: 'Dark Data Labs | Transformez vos données en croissance mesurable',
   description: 'Dark Data Labs aide les PME ambitieuses à exploiter leurs données pour générer de la croissance mesurable.',
   icons: [
     {
