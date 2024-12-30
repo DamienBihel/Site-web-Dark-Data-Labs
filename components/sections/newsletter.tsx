@@ -39,12 +39,23 @@ export function Newsletter() {
     setStatus("idle")
 
     try {
-      // TODO: Implémenter l'inscription à la newsletter
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de l\'inscription');
+      }
+
       setStatus("success")
       setEmail("")
       setConsent(false)
     } catch (error) {
+      console.error('Erreur:', error)
       setStatus("error")
     }
 
