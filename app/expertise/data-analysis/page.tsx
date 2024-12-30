@@ -5,37 +5,40 @@ import { Footer } from "@/components/sections/footer"
 import { ExpertiseHeader } from "@/components/expertise/expertise-header"
 import { TechStack } from "@/components/expertise/tech-stack"
 import { Domains } from "@/components/expertise/domains"
-import { VisualSection } from "@/components/expertise/visual-section"
+import { Brain, LineChart, Rocket } from "lucide-react"
 
 export default function DataAnalysisPage() {
   return (
-    <main>
+    <main className="bg-[#0A0A0A]">
       <Navbar />
       <ExpertiseHeader
         title="Data Analysis"
         subtitle="Transformez vos données en décisions éclairées"
-        description="L'analyse de données n'est pas qu'une question de chiffres - c'est l'art de transformer des informations brutes en insights actionnables pour votre business."
+        description="L'analyse de données ne se limite pas aux chiffres : c'est l'art de transformer des informations brutes en insights stratégiques pour booster votre business."
       />
-      <VisualSection
-        imageSrc="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070"
-        imageAlt="Data Analysis Dashboard"
-        title="L'Intelligence des Données"
-        description="Notre approche combine expertise technique et compréhension business pour transformer vos données en avantages compétitifs concrets."
-        stats={[
-          { value: "85%", label: "Précision prédictive" },
-          { value: "60%", label: "Gain de temps" },
-          { value: "3x", label: "ROI moyen" }
-        ]}
-      />
+      
+      <div className="relative py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:mx-0">
+            <h2 className="text-3xl font-['Montserrat'] font-extrabold tracking-[0.05em] text-[#F2F2F2] sm:text-4xl uppercase mb-6">
+              L'Intelligence des Données
+            </h2>
+            <p className="text-lg font-['Roboto'] text-[#F2F2F2]/70 leading-relaxed">
+              Notre approche allie <span className="text-[#00FF85] font-semibold">expertise technique</span> et <span className="text-[#00FF85] font-semibold">compréhension business</span> pour convertir vos données en <span className="text-[#00FF85] font-semibold">avantages compétitifs concrets</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <TechStack
         title="Notre Stack Technique"
         stacks={[
           {
             category: "Data Processing",
             items: [
-              "Python (Pandas, NumPy, Scikit-learn)",
-              "SQL (PostgreSQL, MySQL)",
-              "R (analyses statistiques)"
+              "Python : Pandas, NumPy, Scikit-learn",
+              "SQL : PostgreSQL, MySQL",
+              "R : Analyses statistiques"
             ]
           },
           {
@@ -44,48 +47,38 @@ export default function DataAnalysisPage() {
               "Power BI",
               "Tableau",
               "Plotly",
-              "Custom dashboards"
+              "Dashboards personnalisés"
             ]
           },
           {
             category: "Infrastructure",
             items: [
-              "Cloud (AWS, GCP)",
+              "Cloud : AWS, GCP",
               "Data Lakes",
               "Data Warehouses"
             ]
           }
         ]}
       />
+
       <Domains
         title="Domaines d'Application"
+        description="Des solutions d'analyse adaptées à vos besoins spécifiques"
         domains={[
           {
             title: "Business Intelligence",
-            items: [
-              "Analyses des ventes",
-              "Prévisions financières",
-              "Segmentation client",
-              "Analyse de performance"
-            ]
+            description: "Insights stratégiques pour des décisions éclairées",
+            icon: <Brain className="h-6 w-6" />
           },
           {
             title: "Optimisation Opérationnelle",
-            items: [
-              "Efficacité des processus",
-              "Gestion des stocks",
-              "Maintenance prédictive",
-              "Contrôle qualité"
-            ]
+            description: "Réduction des coûts, amélioration des processus",
+            icon: <Rocket className="h-6 w-6" />
           },
           {
             title: "Marketing Analytics",
-            items: [
-              "ROI des campagnes",
-              "Parcours client",
-              "Analyse comportementale",
-              "Attribution marketing"
-            ]
+            description: "Analyse de performances, segmentation et ciblage précis",
+            icon: <LineChart className="h-6 w-6" />
           }
         ]}
       />

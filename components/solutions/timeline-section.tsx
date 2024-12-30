@@ -1,69 +1,71 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
-import { motion } from "framer-motion"
+import React from "react"
 
 interface TimelineItem {
-  icon: any
   title: string
-  duration: string
   description: string
+  date?: string
+  icon?: React.ReactNode
 }
 
 interface TimelineSectionProps {
+  title?: string
   items: TimelineItem[]
 }
 
-export function TimelineSection({ items }: TimelineSectionProps) {
+export function TimelineSection({
+  title = "Notre processus",
+  items,
+}: TimelineSectionProps) {
   return (
-    <section className="py-24 bg-muted/50">
-      <div className="container">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center mb-16"
-        >
-          Planning Type
-        </motion.h2>
+    <div className="bg-white py-16">
+      <div className="container mx-auto px-4">
+        {title && (
+          <h2 className="mb-12 text-center text-3xl font-bold">{title}</h2>
+        )}
+        <div className="mx-auto max-w-4xl">
+          <div className="relative space-y-8">
+            {/* Ligne verticale */}
+            <div className="absolute left-1/2 h-full w-0.5 -translate-x-1/2 bg-gray-200" />
 
-        <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-border" />
-          
-          <div className="space-y-12">
-            {items.map((item, index) => {
-              const Icon = item.icon
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`flex items-center gap-8 ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
-                >
-                  <div className={`flex-1 ${index % 2 === 0 ? "text-right" : "text-left"}`}>
-                    <Card className="inline-block p-6">
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-sm text-secondary font-medium mb-3">{item.duration}</p>
-                      <p className="text-muted-foreground">{item.description}</p>
-                    </Card>
-                  </div>
+            {items.map((item, index) => (
+              <div
+                key={index}
+                className={`relative flex ${
+                  index % 2 === 0 ? "flex-row-reverse" : ""
+                } items-center justify-center gap-8`}
+              >
+                {/* Point sur la timeline */}
+                <div className="absolute left-1/2 z-10 h-4 w-4 -translate-x-1/2 rounded-full bg-primary" />
 
-                  <div className="relative z-10 shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                      <Icon className="h-6 w-6 text-secondary" />
+                {/* Contenu */}
+                <div className="w-1/2 p-4">
+                  <div
+                    className={`rounded-lg bg-white p-6 shadow-lg ${
+                      index % 2 === 0 ? "ml-8" : "mr-8"
+                    }`}
+                  >
+                    <div className="mb-2 flex items-center gap-2">
+                      {item.icon && (
+                        <div className="text-primary">{item.icon}</div>
+                      )}
+                      <h3 className="text-xl font-semibold">{item.title}</h3>
                     </div>
+                    {item.date && (
+                      <p className="mb-2 text-sm text-gray-500">{item.date}</p>
+                    )}
+                    <p className="text-gray-600">{item.description}</p>
                   </div>
+                </div>
 
-                  <div className="flex-1" />
-                </motion.div>
-              )
-            })}
+                {/* Espace pour l'autre côté */}
+                <div className="w-1/2" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

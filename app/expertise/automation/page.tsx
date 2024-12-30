@@ -5,33 +5,44 @@ import { Footer } from "@/components/sections/footer"
 import { ExpertiseHeader } from "@/components/expertise/expertise-header"
 import { TechStack } from "@/components/expertise/tech-stack"
 import { Domains } from "@/components/expertise/domains"
-import { VisualSection } from "@/components/expertise/visual-section"
+import { Workflow, Settings2, Megaphone } from "lucide-react"
 
 export default function AutomationPage() {
   return (
-    <main>
+    <main className="bg-[#0A0A0A]">
       <Navbar />
       <ExpertiseHeader
         title="Automation"
         subtitle="Libérez votre potentiel avec l'automatisation intelligente"
-        description="L'automatisation n'est pas une simple délégation de tâches aux machines - c'est une réinvention intelligente de vos processus pour plus d'efficacité."
+        description="L'automatisation ne se limite pas à déléguer des tâches aux machines : c'est une réinvention stratégique de vos processus pour gagner en efficacité et en performance."
       />
-      <VisualSection
-        imageSrc="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072"
-        imageAlt="Automation Workflow"
-        title="L'Efficacité Automatisée"
-        description="Nos solutions d'automatisation transforment vos processus manuels en workflows intelligents, libérant votre équipe pour des tâches à plus forte valeur ajoutée."
-        stats={[
-          { value: "-40%", label: "Temps administratif" },
-          { value: "99%", label: "Précision" },
-          { value: "24/7", label: "Disponibilité" }
-        ]}
-      />
+      
+      <div className="relative py-24">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[#1F1F1F]/50" />
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-40 mix-blend-overlay" />
+          <div className="absolute inset-0">
+            <div className="h-full w-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#00FF85]/10 via-transparent to-transparent blur-2xl" />
+          </div>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:mx-0">
+            <h2 className="text-3xl font-['Montserrat'] font-extrabold tracking-[0.05em] text-[#F2F2F2] sm:text-4xl uppercase mb-6">
+              L'Efficacité Automatisée
+            </h2>
+            <p className="text-lg font-['Roboto'] text-[#F2F2F2]/70 leading-relaxed">
+              Nous transformons vos processus manuels en <span className="text-[#00FF85] font-semibold">workflows intelligents</span>, libérant votre équipe pour se concentrer sur des tâches à <span className="text-[#00FF85] font-semibold">forte valeur ajoutée</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <TechStack
         title="Notre Stack Technique"
         stacks={[
           {
-            category: "Automatisation Code",
+            category: "Automatisation avec Code",
             items: [
               "Python",
               "JavaScript",
@@ -58,35 +69,25 @@ export default function AutomationPage() {
           }
         ]}
       />
+
       <Domains
         title="Domaines d'Application"
+        description="Des solutions d'automatisation adaptées à vos besoins spécifiques"
         domains={[
           {
             title: "Processus Administratifs",
-            items: [
-              "Génération de rapports",
-              "Traitement de documents",
-              "Gestion des emails",
-              "Facturation automatique"
-            ]
+            description: "Simplification et automatisation des tâches répétitives",
+            icon: <Workflow className="h-6 w-6" />
           },
           {
             title: "Opérations Business",
-            items: [
-              "Synchronisation des données",
-              "Mise à jour inventaires",
-              "Alertes intelligentes",
-              "Workflow approval"
-            ]
+            description: "Fluidification des workflows pour une productivité accrue",
+            icon: <Settings2 className="h-6 w-6" />
           },
           {
             title: "Marketing & Communication",
-            items: [
-              "Posts automatisés",
-              "Nurturing email",
-              "Lead scoring",
-              "Follow-up client"
-            ]
+            description: "Automatisation des campagnes et du reporting",
+            icon: <Megaphone className="h-6 w-6" />
           }
         ]}
       />

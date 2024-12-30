@@ -5,11 +5,12 @@ import { Montserrat, Roboto, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
 import { ProgressBar } from '@/components/ui/progress-bar'
 import { Toaster } from "@/components/ui/toaster"
+import { Navbar } from "@/components/layout/navbar"
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
   variable: '--font-montserrat',
-  weight: ['600', '700'],
+  weight: ['400', '600', '700'],
 })
 
 const roboto = Roboto({ 
@@ -51,11 +52,11 @@ export default function RootLayout({
       <body className={`${montserrat.variable} ${roboto.variable} ${jetbrainsMono.variable} ${inter.className} font-roboto`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
         >
           <ProgressBar />
+          <Navbar />
           {children}
           <Toaster />
         </ThemeProvider>

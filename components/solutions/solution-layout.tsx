@@ -1,22 +1,15 @@
 "use client"
 
-import { ReactNode } from "react"
-import { motion } from "framer-motion"
-import { Footer } from "@/components/sections/footer"
+import React from "react"
 
 interface SolutionLayoutProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export function SolutionLayout({ children }: SolutionLayoutProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      {children}
-      <Footer />
-    </motion.div>
+    <div className="flex min-h-screen flex-col">
+      <main className="flex-1">{children}</main>
+    </div>
   )
 }

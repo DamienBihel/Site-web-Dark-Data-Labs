@@ -1,54 +1,59 @@
 "use client"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { motion } from "framer-motion"
-import { HelpCircle } from "lucide-react"
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
-interface FAQSectionProps {
-  faqs: {
-    question: string
-    answer: string
-  }[]
+interface FAQ {
+  question: string
+  answer: string
 }
 
-export function FAQSection({ faqs }: FAQSectionProps) {
-  return (
-    <section className="py-24">
-      <div className="container max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex p-3 rounded-lg bg-secondary/10 mb-4">
-            <HelpCircle className="h-6 w-6 text-secondary" />
-          </div>
-          <h2 className="text-3xl font-bold">Questions Fréquentes</h2>
-        </motion.div>
+interface FAQSectionProps {
+  title?: string
+  faqs: FAQ[]
+}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground">{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </motion.div>
+export function FAQSection({ title = "Questions fréquentes", faqs }: FAQSectionProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
+  return (
+    <div className="bg-gray-50 py-16">
+      <div className="container mx-auto px-4">
+        <h2 className="mb-8 text-center text-3xl font-bold">{title}</h2>
+        <div className="mx-auto max-w-3xl space-y-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="rounded-lg bg-white shadow-sm"
+            >
+              <button
+                className="flex w-full items-center justify-between p-4 text-left"
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              >
+                <span className="text-lg font-medium">{faq.question}</span>
+                <span className="text-2xl">
+                  {openIndex === index ? "−" : "+"}
+                </span>
+              </button>
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-t border-gray-200 p-4 text-gray-600">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

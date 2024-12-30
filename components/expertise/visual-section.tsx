@@ -1,60 +1,38 @@
-"use client"
-
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { Card } from "@/components/ui/card"
-
 interface VisualSectionProps {
-  imageSrc: string
-  imageAlt: string
   title: string
   description: string
-  stats: {
-    value: string
-    label: string
-  }[]
+  imagePath: string
+  imageAlt: string
+  reverse?: boolean
 }
 
-export function VisualSection({ imageSrc, imageAlt, title, description, stats }: VisualSectionProps) {
+export function VisualSection({ title, description, imagePath, imageAlt, reverse = false }: VisualSectionProps) {
   return (
-    <section className="py-24">
-      <div className="container">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative aspect-square rounded-lg overflow-hidden"
-          >
-            <Image
-              src={imageSrc}
-              alt={imageAlt}
-              fill
-              className="object-cover"
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h2 className="text-3xl font-bold mb-6">{title}</h2>
-            <p className="text-lg text-muted-foreground mb-8">{description}</p>
-            
-            <div className="grid sm:grid-cols-3 gap-4">
-              {stats.map((stat, index) => (
-                <Card key={index} className="p-4 text-center">
-                  <div className="text-2xl font-bold text-secondary mb-1">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </Card>
-              ))}
+    <div className="py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className={`mx-auto max-w-2xl lg:mx-0 ${reverse ? 'lg:ml-auto' : ''}`}>
+          <div className={`grid grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 ${reverse ? 'lg:items-end' : 'lg:items-start'} lg:gap-y-10`}>
+            <div className={`lg:order-${reverse ? 2 : 1} lg:max-w-lg`}>
+              <h2 className="text-3xl font-['Montserrat'] font-extrabold tracking-[0.05em] text-[#F2F2F2] sm:text-4xl uppercase mb-6">
+                {title}
+              </h2>
+              <p className="mt-6 text-lg leading-8 text-[#F2F2F2]/70 font-['Roboto']">
+                {description}
+              </p>
             </div>
-          </motion.div>
+            <div className={`lg:order-${reverse ? 1 : 2}`}>
+              <div className="relative aspect-[6/5] w-full max-w-xl lg:max-w-none">
+                <img
+                  src={imagePath}
+                  alt={imageAlt}
+                  className="absolute inset-0 h-full w-full rounded-2xl bg-[#1F1F1F]/50 object-cover shadow-2xl"
+                />
+                <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-[#F2F2F2]/10"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

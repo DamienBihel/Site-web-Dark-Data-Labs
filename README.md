@@ -1,39 +1,82 @@
 # Dark Data Labs
 
-Site web vitrine de Dark Data Labs, une entreprise spécialisée dans l'analyse de données et l'automatisation pour les PME.
+![CI/CD](https://github.com/damienchangenot/Site-web-Dark-Data-Labs/workflows/CI%2FCD%20Pipeline/badge.svg)
+[![codecov](https://codecov.io/gh/damienchangenot/Site-web-Dark-Data-Labs/branch/main/graph/badge.svg)](https://codecov.io/gh/damienchangenot/Site-web-Dark-Data-Labs)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=damienchangenot_Site-web-Dark-Data-Labs&metric=alert_status)](https://sonarcloud.io/dashboard?id=damienchangenot_Site-web-Dark-Data-Labs)
 
-## Technologies utilisées
+## 🚀 À propos
+
+Site web de Dark Data Labs, une entreprise spécialisée dans l'analyse de données et l'automatisation pour les PME.
+
+## 🛠 Technologies
 
 - Next.js 14
-- React
+- React 18
 - TypeScript
 - Tailwind CSS
+- Jest & Testing Library
 - Framer Motion
-- Radix UI
-- tsParticles
 
-## Fonctionnalités
-
-- Design moderne et responsive
-- Animations fluides
-- Effets de particules interactifs
-- Formulaire de contact
-- Mode clair/sombre
-
-## Installation
+## 🔧 Installation
 
 ```bash
-# Cloner le repository
-git clone https://github.com/DamienBihel/Site-web-Dark-Data-Labs.git
+# Cloner le projet
+git clone https://github.com/damienchangenot/Site-web-Dark-Data-Labs.git
 
 # Installer les dépendances
 npm install
 
-# Lancer le serveur de développement
+# Lancer en développement
 npm run dev
 ```
 
-Le site sera accessible à l'adresse [http://localhost:3000](http://localhost:3000)
+## 🧪 Tests
+
+```bash
+# Lancer tous les tests
+npm test
+
+# Lancer les tests d'intégration
+npm run test:integration
+
+# Lancer les tests d'accessibilité
+npm run test:accessibility
+
+# Mode watch
+npm run test:watch
+```
+
+## 📊 Qualité du Code
+
+- **Coverage**: > 80% sur toutes les métriques
+- **Linting**: ESLint avec configuration stricte
+- **Types**: TypeScript strict mode
+- **Tests**: Jest, Testing Library, et tests d'accessibilité
+- **CI/CD**: GitHub Actions pour l'intégration et le déploiement continus
+
+## 🌐 Environnements
+
+- **Development**: `http://localhost:3000`
+- **Production**: [https://darkdatalabs.fr](https://darkdatalabs.fr)
+
+## 📝 Scripts
+
+- `npm run dev`: Lance le serveur de développement
+- `npm run build`: Build le projet
+- `npm run start`: Lance le serveur de production
+- `npm run lint`: Lance ESLint
+- `npm test`: Lance les tests avec couverture
+- `npm run test:ci`: Lance les tests en mode CI
+
+## 🔒 Sécurité
+
+- Analyse CodeQL automatique
+- Dépendances régulièrement mises à jour
+- Tests de sécurité dans la CI/CD
+
+## 📜 Licence
+
+Ce projet est sous licence privée. Tous droits réservés.
 
 ## Structure du projet
 

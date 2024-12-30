@@ -5,87 +5,97 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { Logo } from "@/components/ui/logo"
 import { motion } from "framer-motion"
-import { NavigationItem } from "./navigation-item"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-const navigation = [
+const navigationItems = [
   {
-    name: "Solutions",
+    title: "Solutions",
     href: "/solutions",
+    description: "Découvrez nos solutions data sur mesure",
     items: [
       {
-        name: "Pack Starter",
+        title: "Starter",
         href: "/solutions/starter",
-        description: "Pour débuter votre transformation digitale"
+        description: "Pour les petites entreprises et startups"
       },
       {
-        name: "Pack Business",
+        title: "Business",
         href: "/solutions/business",
-        description: "Pour optimiser vos performances"
+        description: "Pour les moyennes et grandes entreprises"
       },
       {
-        name: "Pack Premium",
+        title: "Premium",
         href: "/solutions/premium",
-        description: "Pour une transformation complète"
+        description: "Pour les grandes entreprises avec des besoins spécifiques"
       }
     ]
   },
   {
-    name: "Expertise",
+    title: "Expertise",
     href: "/expertise",
+    description: "Notre expertise en data science",
     items: [
       {
-        name: "Data Analysis",
+        title: "Analyse de données",
         href: "/expertise/data-analysis",
-        description: "Transformez vos données en insights actionnables"
+        description: "Analyse approfondie de vos données"
       },
       {
-        name: "Automatisation",
+        title: "Automatisation",
         href: "/expertise/automation",
-        description: "Optimisez vos processus métier"
+        description: "Automatisation de vos processus data"
       },
       {
-        name: "Études de cas",
+        title: "Intelligence Artificielle",
+        href: "/expertise/ia",
+        description: "Solutions IA innovantes"
+      },
+      {
+        title: "Études de cas",
         href: "/expertise/case-studies",
-        description: "Découvrez nos success stories"
+        description: "Découvrez nos réalisations"
       }
     ]
   },
   {
-    name: "Resources",
+    title: "Ressources",
     href: "/resources",
+    description: "Ressources et documentation",
     items: [
       {
-        name: "Blog",
+        title: "Blog",
         href: "/blog",
-        description: "Articles techniques et études de cas"
+        description: "Articles et actualités"
       },
       {
-        name: "Guides",
+        title: "Guides",
         href: "/guides",
-        description: "Tutoriels et documentation"
-      },
-      {
-        name: "Templates",
-        href: "/templates",
-        description: "Modèles et outils prêts à l'emploi"
+        description: "Guides et tutoriels"
       }
     ]
   }
 ]
 
 export function Navbar() {
-  const [open, setOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
-  const pathname = usePathname()
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0)
+      const scrolled = window.scrollY > 0
+      setIsScrolled(scrolled)
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -94,71 +104,73 @@ export function Navbar() {
 
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        isScrolled
-          ? "border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm"
+        "fixed top-0 z-50 w-full transition-all duration-300",
+        isScrolled 
+          ? "bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-[#F2F2F2]/10" 
           : "bg-transparent"
       )}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      data-testid="motion-header"
     >
-      <nav className="container flex h-20 items-center justify-between">
-        <div className="flex items-center gap-12">
-          <Logo />
-          <div className="hidden md:flex items-center gap-8">
-            {navigation.map((item) => (
-              <NavigationItem key={item.name} item={item} />
+      {/* Effet de grain uniquement quand scrollé */}
+      {isScrolled && (
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-40 mix-blend-overlay pointer-events-none" />
+      )}
+
+      <div className="container flex h-16 items-center relative">
+        <Logo className="mr-8" />
+        <NavigationMenu data-testid="navigation-menu">
+          <NavigationMenuList className="space-x-2" data-testid="navigation-menu-list">
+            {navigationItems.map((item) => (
+              <NavigationMenuItem key={item.title} data-testid="navigation-menu-item">
+                <NavigationMenuTrigger 
+                  className="font-['Montserrat'] font-bold uppercase tracking-wide text-[#F2F2F2] hover:text-[#00FF85] transition-colors data-[state=open]:text-[#00FF85] bg-transparent hover:bg-[#00FF85]/10"
+                  data-testid="navigation-menu-trigger"
+                >
+                  {item.title}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent 
+                  className="bg-[#1F1F1F] border border-[#F2F2F2]/10 backdrop-blur-xl"
+                  data-testid="navigation-menu-content"
+                >
+                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    {item.items.map((subItem) => (
+                      <li key={subItem.title}>
+                        <Link
+                          href={subItem.href}
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-[#00FF85]/10 focus:bg-[#00FF85]/10 group"
+                          data-testid="next-link"
+                        >
+                          <div className="text-sm font-bold leading-none text-[#F2F2F2] group-hover:text-[#00FF85] font-['Montserrat'] uppercase tracking-wide">
+                            {subItem.title}
+                          </div>
+                          <p className="line-clamp-2 text-sm leading-snug text-[#F2F2F2]/60 group-hover:text-[#F2F2F2]/80 font-['Roboto']">
+                            {subItem.description}
+                          </p>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
             ))}
-          </div>
-        </div>
-
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              className="px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          </NavigationMenuList>
+        </NavigationMenu>
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <nav className="flex items-center space-x-2">
+            <Link
+              href="/contact"
+              className="px-6 py-2.5 text-sm font-bold leading-none rounded-md bg-[#00FF85] text-[#0A0A0A] hover:scale-105 transition-all duration-300 font-['Montserrat'] uppercase tracking-wider"
+              data-testid="next-link"
             >
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="pr-0">
-            <SheetTitle className="mb-8">Menu</SheetTitle>
-            <ScrollArea className="h-[calc(100vh-8rem)] pb-10">
-              <div className="flex flex-col space-y-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      "text-sm font-medium transition-colors hover:text-primary",
-                      pathname === item.href
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    )}
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <Button asChild className="mt-4">
-                  <Link href="/contact">Contactez-nous</Link>
-                </Button>
-              </div>
-            </ScrollArea>
-          </SheetContent>
-        </Sheet>
-
-        <div className="hidden md:block">
-          <Button asChild className="bg-accent hover:bg-accent/90 text-white">
-            <Link href="/contact">
-              Contactez-nous
+              Contact
             </Link>
-          </Button>
+          </nav>
         </div>
-      </nav>
+      </div>
     </motion.header>
   )
 }

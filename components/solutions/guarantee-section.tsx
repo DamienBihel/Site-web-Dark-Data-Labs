@@ -1,66 +1,34 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
-import { Shield, Clock, Award } from "lucide-react"
-import { motion } from "framer-motion"
+import React from "react"
 
-const guarantees = [
-  {
-    icon: Shield,
-    title: "Méthodologie éprouvée",
-    description: "Une approche structurée et testée pour garantir des résultats"
-  },
-  {
-    icon: Award,
-    title: "Expertise certifiée",
-    description: "Une équipe technique certifiée et expérimentée"
-  },
-  {
-    icon: Clock,
-    title: "Support réactif",
-    description: "Une réponse garantie sous 24h pour toute question"
-  }
-]
+interface GuaranteeSectionProps {
+  title: string
+  description: string
+  guarantees: string[]
+}
 
-export function GuaranteeSection() {
+export function GuaranteeSection({
+  title,
+  description,
+  guarantees,
+}: GuaranteeSectionProps) {
   return (
-    <section className="py-24 bg-muted">
-      <div className="container">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center mb-16"
-        >
-          Nos Garanties
-        </motion.h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {guarantees.map((guarantee, index) => {
-            const Icon = guarantee.icon
-            return (
-              <motion.div
-                key={guarantee.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="relative h-full p-8 overflow-hidden hover:shadow-lg transition-all duration-300">
-                  <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-secondary/10 rounded-full" />
-                  <div className="relative">
-                    <div className="inline-flex p-3 rounded-lg bg-secondary/10 mb-6">
-                      <Icon className="h-6 w-6 text-secondary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-4">{guarantee.title}</h3>
-                    <p className="text-muted-foreground">{guarantee.description}</p>
-                  </div>
-                </Card>
-              </motion.div>
-            )}
-          )}
+    <div className="bg-white py-16">
+      <div className="container mx-auto px-4">
+        <h2 className="mb-4 text-center text-3xl font-bold">{title}</h2>
+        <p className="mb-8 text-center text-gray-600">{description}</p>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {guarantees.map((guarantee, index) => (
+            <div
+              key={index}
+              className="rounded-lg border border-gray-200 p-6 text-center"
+            >
+              <p className="text-lg">{guarantee}</p>
+            </div>
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   )
 }

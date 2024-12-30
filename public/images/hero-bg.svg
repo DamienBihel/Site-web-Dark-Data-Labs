@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond avec motif de points connectés -->
+  <rect width="1920" height="1080" fill="#020817"/>
+  
+  <!-- Grille de points -->
+  <g opacity="0.3">
+    <!-- Points -->
+    <circle cx="480" cy="270" r="4" fill="#3B82F6"/>
+    <circle cx="960" cy="270" r="4" fill="#3B82F6"/>
+    <circle cx="1440" cy="270" r="4" fill="#3B82F6"/>
+    
+    <circle cx="480" cy="540" r="4" fill="#3B82F6"/>
+    <circle cx="960" cy="540" r="4" fill="#3B82F6"/>
+    <circle cx="1440" cy="540" r="4" fill="#3B82F6"/>
+    
+    <circle cx="480" cy="810" r="4" fill="#3B82F6"/>
+    <circle cx="960" cy="810" r="4" fill="#3B82F6"/>
+    <circle cx="1440" cy="810" r="4" fill="#3B82F6"/>
+    
+    <!-- Lignes de connexion -->
+    <path d="M480 270 L960 270 L1440 270" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+    <path d="M480 540 L960 540 L1440 540" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+    <path d="M480 810 L960 810 L1440 810" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+    
+    <path d="M480 270 L480 540 L480 810" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+    <path d="M960 270 L960 540 L960 810" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+    <path d="M1440 270 L1440 540 L1440 810" stroke="#3B82F6" stroke-width="2" opacity="0.2"/>
+  </g>
+  
+  <!-- Effet de dégradé -->
+  <rect width="1920" height="1080" fill="url(#paint0_radial)" style="mix-blend-mode:overlay"/>
+  
+  <defs>
+    <!-- Dégradé radial pour l'effet de profondeur -->
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" 
+                    gradientTransform="translate(960 540) rotate(90) scale(540 960)">
+      <stop stop-color="#3B82F6" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#020817" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
