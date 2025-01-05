@@ -24,7 +24,8 @@
 - Landing page dynamique avec animations
 - Présentation des solutions et services
 - Études de cas interactives
-- Système de contact et newsletter
+- Système de contact et newsletter avec email de confirmation personnalisé
+- Pages légales conformes (mentions légales et politique de confidentialité)
 - Interface adaptative (desktop et mobile)
 
 ---
@@ -35,6 +36,9 @@
 ```
 project/
 ├── app/            # Pages et layout Next.js
+│   ├── api/        # Routes API (newsletter, etc.)
+│   ├── legal/      # Pages légales
+│   └── privacy/    # Politique de confidentialité
 ├── components/
 │   ├── ui/         # Composants d'interface réutilisables
 │   ├── layout/     # Composants de mise en page
@@ -113,6 +117,12 @@ npm run dev
 - Props typées avec interfaces TypeScript
 - Animations optimisées pour la performance
 - Composants accessibles avec Radix UI
+
+### 🔐 Configuration requise
+```env
+# Fichier .env.local
+BREVO_API_KEY=votre_clé_api_brevo  # Clé API pour l'envoi d'emails via Brevo
+```
 
 ---
 

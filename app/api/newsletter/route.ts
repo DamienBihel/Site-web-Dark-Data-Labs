@@ -45,24 +45,40 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         sender: {
-          name: 'Dark Data Labs',
-          email: 'contact@darkdatalabs.fr'
+          name: 'Damien de Dark Data Labs',
+          email: 'damien.bihel@darkdatalabs.fr'
         },
         to: [{
           email: email
         }],
-        subject: 'Bienvenue dans la newsletter Dark Data Labs !',
+        subject: 'Bienvenue chez Dark Data Labs – Transformons vos données en leviers de performance !',
         htmlContent: `
-          <h2>Merci de votre inscription !</h2>
-          <p>Vous êtes maintenant inscrit(e) à la newsletter de Dark Data Labs.</p>
-          <p>Vous recevrez régulièrement :</p>
-          <ul>
-            <li>Des articles techniques pour perfectionner vos compétences</li>
-            <li>Des études de cas détaillées pour vous inspirer</li>
-            <li>Les dernières actualités et innovations en Data Science et IA</li>
-          </ul>
-          <p>À très bientôt !</p>
-          <p>L'équipe Dark Data Labs</p>
+          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <p>Bonjour,</p>
+            
+            <p>Bienvenue dans la communauté Dark Data Labs ! 🚀</p>
+            
+            <p>Tu viens de faire un premier pas vers une utilisation plus stratégique et efficace de tes données. Chez Dark Data Labs, notre mission est claire : rendre l'analyse de données accessible, simple et impactante pour les PME/TPE.</p>
+            
+            <p>✨ Voici ce que tu trouveras dans notre newsletter :</p>
+            <ul>
+              <li>Des astuces pratiques pour maîtriser tes données.</li>
+              <li>Des idées d'automatisations pour gagner du temps et réduire les erreurs.</li>
+              <li>Des exemples concrets d'entreprises qui boostent leur rentabilité grâce à l'analyse de données.</li>
+            </ul>
+            
+            <p>🛠️ Envie d'en savoir plus ?</p>
+            <p>Chaque mail que tu recevras est pensé pour t'apporter une vraie valeur ajoutée. Pas de blabla, que du concret pour t'aider à mieux piloter ton activité.</p>
+            
+            <p>Si tu as des questions, des défis spécifiques, ou si tu veux simplement échanger sur l'automatisation et l'analyse de données, réponds à cet email. On est là pour ça, et toujours avec le sourire (virtuel 😄).</p>
+            
+            <p>On se retrouve très vite pour découvrir comment libérer tout le potentiel de tes données. 💡</p>
+            
+            <p>À bientôt,<br>
+            Damien</p>
+            
+            <p><a href="https://darkdatalabs.fr/" style="color: #00FF85; text-decoration: none;">https://darkdatalabs.fr/</a></p>
+          </div>
         `,
       }),
     });

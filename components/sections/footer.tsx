@@ -25,8 +25,8 @@ const navigation = {
     { name: "Blog", href: "/blog" },
   ],
   legal: [
+    { name: "Mentions légales", href: "/legal" },
     { name: "Confidentialité", href: "/privacy" },
-    { name: "CGU", href: "/terms" },
   ],
   social: [
     {
@@ -161,9 +161,23 @@ export function Footer() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-12 border-t border-[#F2F2F2]/10 pt-8"
         >
-          <p className="text-sm text-[#F2F2F2]/60 font-['Roboto']">
-            &copy; {new Date().getFullYear()} Dark Data Labs. Tous droits réservés.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-[#F2F2F2]/60 font-['Roboto'] mb-4 md:mb-0">
+              &copy; {new Date().getFullYear()} Dark Data Labs. Tous droits réservés.
+            </p>
+            <ul className="flex space-x-6">
+              {navigation.legal.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-[#F2F2F2]/60 hover:text-[#00FF85] transition-colors font-['Roboto']"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </motion.div>
       </div>
     </footer>
