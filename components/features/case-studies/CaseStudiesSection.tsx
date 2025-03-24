@@ -28,6 +28,20 @@ const animations = {
 
 const caseStudies = [
   {
+    title: "Analyse de la Qualité de l'Eau Potable",
+    client: "Projet de Recherche",
+    description: "Étude approfondie sur la qualité de l'eau potable utilisant des techniques avancées d'analyse de données.",
+    image: "/images/case-studies/water-analysis/main.jpg",
+    results: [
+      "Analyse de 20+ indicateurs de qualité",
+      "Précision des prédictions de 95%",
+      "Couverture de 100+ zones géographiques"
+    ],
+    technologies: ["Python", "Pandas", "Scikit-learn"],
+    industry: "Environnement & Santé Publique",
+    href: "/case-studies/water-analysis"
+  },
+  {
     title: "Optimisation de la Supply Chain",
     client: "LogiTech Solutions",
     description: "Mise en place d'une solution d'analyse prédictive pour optimiser la gestion des stocks et la logistique.",

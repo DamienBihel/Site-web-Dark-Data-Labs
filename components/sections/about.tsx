@@ -1,8 +1,9 @@
 "use client"
 
+import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Brain, Workflow, GraduationCap, Target, LineChart, History, ArrowRight, CheckCircle, Lightbulb } from "lucide-react"
+import { Brain, Workflow, GraduationCap, Target, LineChart, History, ArrowRight, CheckCircle, Lightbulb, Code, Gauge } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -27,42 +28,75 @@ const stats = [
   }
 ]
 
+// Expertise enrichie avec les éléments de features/about/expertise.tsx
 const expertise = [
   {
     icon: Brain,
     title: "Analyse avancée",
-    description: "Python, IA et scraping pour extraire la valeur de vos données"
+    description: "Python, IA et scraping pour extraire la valeur de vos données",
+    items: [
+      "Data Analysis Professionnel",
+      "Expert en Python",
+      "Spécialiste du scraping et de l'analyse de données"
+    ]
   },
   {
     icon: Workflow,
     title: "Optimisation des processus",
-    description: "Workflows no-code pour plus d'efficacité"
+    description: "Workflows no-code pour plus d'efficacité",
+    items: [
+      "Création de workflows automatisés",
+      "Intégration d'outils no-code",
+      "Optimisation des processus métier"
+    ]
   },
   {
     icon: GraduationCap,
     title: "Accompagnement stratégique",
-    description: "Une vision data-driven alignée sur vos objectifs business"
+    description: "Une vision data-driven alignée sur vos objectifs business",
+    items: [
+      "Formateur technique expérimenté",
+      "Accompagnement personnalisé",
+      "Vision stratégique data-driven"
+    ]
   }
 ]
 
+// Valeurs enrichies avec les éléments de features/about/values.tsx
 const values = [
   {
-    icon: CheckCircle,
+    icon: Gauge,
     title: "Excellence Technique",
-    description: "Des solutions fiables et une documentation claire"
+    description: "Des solutions fiables et une documentation claire",
+    items: [
+      "Rigueur méthodologique",
+      "Solutions robustes et évolutives",
+      "Documentation précise"
+    ]
   },
   {
-    icon: Brain,
-    title: "Innovation Pratique",
-    description: "Adaptée à vos besoins réels, avec un focus sur le ROI"
+    icon: Lightbulb,
+    title: "Innovation Pragmatique",
+    description: "Adaptée à vos besoins réels, avec un focus sur le ROI",
+    items: [
+      "Solutions adaptées à vos besoins réels",
+      "Approche progressive et mesurable",
+      "Focus sur le ROI"
+    ]
   },
   {
-    icon: Target,
+    icon: LineChart,
     title: "Transparence et Efficacité",
-    description: "Une communication structurée et directe"
+    description: "Une communication structurée et directe",
+    items: [
+      "Communication claire et directe",
+      "Processus structuré",
+      "Résultats mesurables"
+    ]
   }
 ]
 
+// Fonction About enrichie avec les éléments de features/about/
 export function About() {
   return (
     <section className="relative py-24 bg-[#0A0A0A]">
@@ -124,7 +158,17 @@ export function About() {
                         <item.icon className="w-6 h-6 text-[#00FF85]" />
                       </div>
                       <h4 className="font-bold mb-2 text-[#F2F2F2] font-['Montserrat'] uppercase">{item.title}</h4>
-                      <p className="text-[#F2F2F2]/80 font-['Roboto']">{item.description}</p>
+                      <p className="text-[#F2F2F2]/80 font-['Roboto'] mb-4">{item.description}</p>
+                      {item.items && (
+                        <ul className="space-y-2 text-[#F2F2F2]/70 font-['Roboto']">
+                          {item.items.map((subItem, subIndex) => (
+                            <li key={subIndex} className="flex items-start">
+                              <span className="text-[#00FF85] mr-2">•</span>
+                              <span>{subItem}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -147,7 +191,19 @@ export function About() {
                       <value.icon className="w-8 h-8 text-[#00FF85]" />
                     </div>
                     <h4 className="text-xl font-bold mb-4 text-[#F2F2F2] font-['Montserrat'] uppercase">{value.title}</h4>
-                    <p className="text-[#F2F2F2]/80 mb-6 font-['Roboto']">{value.description}</p>
+                    <p className="text-[#F2F2F2]/80 mb-4 font-['Roboto']">{value.description}</p>
+                    
+                    {value.items && (
+                      <ul className="space-y-2 text-[#F2F2F2]/70 font-['Roboto'] mb-4">
+                        {value.items.map((item, itemIndex) => (
+                          <li key={itemIndex} className="flex items-start">
+                            <span className="text-[#00FF85] mr-2">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    
                     {index === 0 && (
                       <div className="mt-auto flex items-start">
                         <Lightbulb className="w-5 h-5 text-[#00FF85] mr-3 mt-1 flex-shrink-0" />

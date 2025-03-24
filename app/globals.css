@@ -2,8 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap');
+
 @layer base {
   :root {
+    /* Couleurs principales selon la charte graphique */
+    --color-dark: #0A0A0A;      /* Noir profond - Couleur principale */
+    --color-neon: #00FF85;      /* Vert néon - Accent */
+    --color-gray: #1F1F1F;      /* Gris anthracite - Fond secondaire */
+    --color-light: #F2F2F2;     /* Blanc cassé - Texte */
+    
+    /* Variantes de transparence */
+    --color-neon-glow: rgba(0, 255, 133, 0.2);    /* Pour effets de glow */
+    --color-dark-overlay: rgba(10, 10, 10, 0.8);   /* Pour overlays */
+    
+    /* Variables Tailwind */
     --background: 0 0% 4%;
     --foreground: 0 0% 95%;
     
@@ -33,6 +46,82 @@
     --ring: 157 100% 50%;
  
     --radius: 0.5rem;
+    
+    /* Breakpoints selon la charte */
+    --mobile: 320px;
+    --tablet: 768px;
+    --desktop: 1024px;
+    --large: 1440px;
+  }
+  
+  /* Typographie selon la charte */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+  }
+  
+  /* Hiérarchie typographique */
+  h1 {
+    font-size: 3rem; /* 48px */
+  }
+  
+  h2 {
+    font-size: 2.25rem; /* 36px */
+  }
+  
+  h3 {
+    font-size: 1.5rem; /* 24px */
+  }
+  
+  p {
+    font-size: 1rem; /* 16px */
+  }
+  
+  .text-small {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  /* Effets visuels selon la charte */
+  .glow-effect {
+    box-shadow: 0 0 20px var(--color-neon-glow);
+  }
+  
+  .grain-texture {
+    position: relative;
+  }
+  
+  .grain-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('/noise.png');
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  
+  .grid-pattern {
+    position: relative;
+  }
+  
+  .grid-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(0, 255, 133, 0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 255, 133, 0.1) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    pointer-events: none;
   }
  
   .dark {
@@ -96,4 +185,178 @@
 .animate-gradient-x {
   animation: gradient-x 15s ease infinite;
   background-size: 200% auto;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Effets de glow */
+.glow-text-sm {
+  text-shadow: 0 0 10px rgba(0, 255, 133, 0.5);
+}
+
+.glow-sm {
+  box-shadow: 0 0 10px rgba(0, 255, 133, 0.5);
+}
+
+.glow-line {
+  box-shadow: 0 0 8px rgba(0, 255, 133, 0.3);
+}
+
+/* Effets de contour pour le texte */
+.text-stroke-sm {
+  -webkit-text-stroke: 0.5px rgba(0, 255, 133, 0.3);
+  text-shadow: 
+    0 0 15px var(--color-neon-glow),
+    0 0 30px var(--color-neon-glow);
+}
+
+.text-stroke-md {
+  -webkit-text-stroke: 1px rgba(0, 255, 133, 0.4);
+  text-shadow: 
+    0 0 20px var(--color-neon-glow),
+    0 0 40px var(--color-neon-glow);
+}
+
+.text-stroke-contrast {
+  -webkit-text-stroke: 1.5px var(--color-neon);
+  text-shadow: 
+    0 0 2px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(0, 255, 133, 0.6);
+  letter-spacing: 0.05em;
+  font-weight: 900;
+}
+
+.neon-title {
+  color: var(--color-neon);
+  text-shadow: 
+    0 0 3px var(--color-neon-glow),
+    0 0 7px rgba(0, 255, 133, 0.4);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Styles spécifiques pour le composant Offers */
+.bg-dark-bg {
+  background-color: var(--color-dark);
+  position: relative;
+}
+
+.bg-dark-card {
+  background-color: var(--color-gray);
+}
+
+.border-dark-border {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.border-neon-green {
+  border-color: var(--color-neon);
+}
+
+.text-neon-green {
+  color: var(--color-neon);
+}
+
+.shadow-neon {
+  box-shadow: 0 0 15px rgba(0, 255, 133, 0.3);
+}
+
+.grain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/noise.png');
+  background-repeat: repeat;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Couleurs et thème sombre */
+:root {
+  --neon-green: #39FF14;
+  --dark-bg: #0A0A0A;
+  --dark-card: #121212;
+  --dark-border: #2A2A2A;
+}
+
+.bg-dark-bg {
+  background-color: var(--dark-bg);
+}
+
+.bg-dark-card {
+  background-color: var(--dark-card);
+}
+
+.border-dark-border {
+  border-color: var(--dark-border);
+}
+
+.text-neon-green {
+  color: var(--neon-green);
+}
+
+.border-neon-green {
+  border-color: var(--neon-green);
+}
+
+/* Effets de glow */
+.glow-text-sm {
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+.glow-text-md {
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+}
+
+.glow-sm {
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+}
+
+.glow-md {
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+.shadow-glow-sm {
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.15);
+}
+
+/* Animations spécifiques */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
 }

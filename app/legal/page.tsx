@@ -11,7 +11,7 @@ export default function LegalPage() {
     <LegalLayout>
       <LegalHeader 
         title="Mentions Légales" 
-        lastUpdated="5 janvier 2025"
+        lastUpdated="24 mars 2025"
       />
       
       <motion.div
@@ -60,8 +60,8 @@ export default function LegalPage() {
             <div className="bg-[#1F1F1F] rounded-lg p-6 hover:shadow-[0_0_20px_rgba(0,255,133,0.2)] transition-all duration-300">
               <p className="font-roboto mb-4">Ce site est hébergé par :</p>
               <ul className="space-y-2 font-roboto">
-                <li><span className="text-[#00FF85]">Société :</span> Netlify</li>
-                <li><span className="text-[#00FF85]">Adresse :</span> San Francisco, Californie, États-Unis</li>
+                <li><span className="text-[#00FF85]">Société :</span> Hostinger (Paris, France)</li>
+                <li><span className="text-[#00FF85]">Adresse :</span> Vilnius, Lithuania</li>
               </ul>
             </div>
           </section>
@@ -76,7 +76,7 @@ export default function LegalPage() {
                 La reproduction de tout ou partie de ce site sur quelque support que ce soit est formellement interdite sauf autorisation expresse de Damien BIHEL.
               </p>
               <p className="font-roboto">
-                2024 Dark Data Labs - Tous droits réservés
+                2025 Dark Data Labs - Tous droits réservés
               </p>
             </div>
           </section>

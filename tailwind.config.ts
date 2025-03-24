@@ -1,11 +1,12 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss"
 
 const config: Config = {
-  darkMode: ['class'],
+  darkMode: ["class"],
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
   theme: {
     container: {
@@ -17,8 +18,8 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        montserrat: ['var(--font-montserrat)'],
-        roboto: ['var(--font-roboto)'],
+        montserrat: ['var(--font-montserrat)', 'sans-serif'],
+        roboto: ['var(--font-roboto)', 'sans-serif'],
         jetbrains: ['var(--font-jetbrains)'],
       },
       colors: {
@@ -28,12 +29,12 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#00FF85",
+          foreground: "#0A0A0A",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#1F1F1F",
+          foreground: "#F2F2F2",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

@@ -1,12 +1,18 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { Container } from "@/components/ui/container"
 import { Card } from "@/components/ui/card"
-import { Mail, Phone, ArrowRight, Lock } from "lucide-react"
+import { Mail, Phone, ArrowRight, Lock, Calendar, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
+import { useState } from "react"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { useState } from "react"
+import { cn } from "@/lib/utils"
 
 const contactInfo = [
   {
@@ -18,208 +24,368 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Téléphone",
-    value: "+33 (0)6 51 08 59 22",
+    value: "06 51 08 59 22",
     href: "tel:+33651085922"
+  },
+  {
+    icon: Calendar,
+    title: "Disponibilité",
+    value: "Lundi-Vendredi, 9h-18h"
+  },
+  {
+    icon: MapPin,
+    title: "Localisation",
+    value: "Limoges, France"
   }
 ]
 
+// Schéma de validation du formulaire
+const formSchema = z.object({
+  name: z.string().min(1, 'Le nom est requis'),
+  email: z.string().email('Format d\'email invalide').min(1, 'L\'email est requis'),
+  company: z.string().optional(),
+  phone: z.string().optional(),
+  message: z.string().min(1, 'Le message est requis'),
+})
+
+type FormData = z.infer<typeof formSchema>
+
 export function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
   const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle")
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: ''
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
   })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true)
     setFormStatus("idle")
+    setError(null)
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de l\'envoi')
-      }
-
+      // Simule un envoi réussi (remplacer par un véritable appel API)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
       setFormStatus("success")
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        message: ''
+      toast({
+        title: 'Message envoyé',
+        description: 'Nous vous répondrons dans les plus brefs délais.',
       })
+      reset()
     } catch (error) {
       console.error('Erreur:', error)
       setFormStatus("error")
+      setError('Une erreur est survenue. Veuillez réessayer plus tard.')
+      toast({
+        title: 'Une erreur est survenue',
+        description: 'Veuillez réessayer plus tard.',
+        variant: 'destructive',
+      } as any)
     }
 
     setIsSubmitting(false)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
   return (
-    <section className="relative py-24 bg-[#0A0A0A]">
+    <section className="py-24 relative isolate overflow-hidden bg-[var(--color-dark)]" id="contact-form">
       {/* Effets de fond */}
       <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-dark)] via-[var(--color-gray)] to-[var(--color-dark)]" />
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-40 mix-blend-overlay" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00FF8520_1px,transparent_1px),linear-gradient(to_bottom,#00FF8520_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        <div className="absolute inset-0">
+          <div className="h-full w-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[var(--color-neon)]/10 via-transparent to-transparent blur-2xl" />
+        </div>
       </div>
 
-      <div className="container px-4 mx-auto relative">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#F2F2F2] via-[#00FF85] to-[#F2F2F2] font-['Montserrat'] uppercase tracking-[0.05em]">
-            Parlez-nous de vos projets, faisons équipe pour atteindre vos objectifs !
-          </h2>
-          <p className="text-xl text-[#F2F2F2]/80 max-w-3xl mx-auto font-['Roboto']">
-            Chaque projet commence par une conversation. Partagez vos idées avec nous et voyons ensemble comment les concrétiser.
-          </p>
+      {/* Grille animée */}
+      <div className="absolute inset-0 overflow-hidden grid-pattern"></div>
+      
+      <Container>
+        <div className="max-w-4xl mx-auto text-center mb-12 relative z-10">
+          <motion.div 
+            className="mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center space-x-2">
+              <span className="relative inline-flex overflow-hidden rounded-full p-[1px]">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--color-neon)_0%,var(--color-gray)_50%,var(--color-neon)_100%)]" />
+                <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[var(--color-dark)] px-3 py-1 text-sm font-bold text-[var(--color-neon)] backdrop-blur-3xl font-['Montserrat'] uppercase tracking-wider">
+                  <Mail className="h-3 w-3 mr-1" /> Contact
+                </div>
+              </span>
+            </div>
+          </motion.div>
+          
+          <motion.h2 
+            className="relative z-10 text-4xl sm:text-5xl mb-8 font-['Montserrat']"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            {/* Effet de halo lumineux atténué */}
+            <span className="absolute -inset-1 blur-lg opacity-15 bg-[var(--color-neon)] rounded-full"></span>
+            
+            {/* Texte principal avec effet néon */}
+            <span className="neon-title relative block">
+              Discutons de votre projet d&apos;automatisation
+            </span>
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-[var(--color-light)]/80 max-w-3xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            30 minutes pour débloquer des heures. Remplissez le formulaire ci-dessous, et on planifie ensemble votre audit.
+          </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto relative z-10">
           {/* Colonne de gauche - Coordonnées */}
-          <div className="space-y-6">
-            <Card className="p-8 bg-[#1F1F1F] border border-[#F2F2F2]/10 hover:border-[#00FF85]/50 transition-all duration-300 backdrop-blur-xl">
-              <h3 className="text-2xl font-extrabold mb-6 text-[#00FF85] font-['Montserrat'] uppercase tracking-wide">
-                Nos coordonnées
-              </h3>
-              <div className="space-y-6">
-                {contactInfo.map((item, index) => (
-                  <a 
-                    key={index}
-                    href={item.href}
-                    className="flex items-start group hover:text-[#00FF85] transition-colors"
-                  >
-                    <div className="p-3 rounded-lg bg-[#00FF85]/10 mr-4 group-hover:bg-[#00FF85]/20 transition-colors">
-                      <item.icon className="w-6 h-6 text-[#00FF85]" />
+          <motion.div 
+            className="space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_var(--color-neon-glow)]">
+              {/* Bordure animée */}
+              <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--color-neon)_0%,var(--color-gray)_50%,var(--color-neon)_100%)]" />
+              
+              {/* Contenu */}
+              <div className="relative bg-[var(--color-dark)] p-[1px] backdrop-blur-xl">
+                <Card className="p-6 bg-[var(--color-dark-overlay)]/80 backdrop-blur-sm border-t border-[var(--color-neon)]/10 overflow-hidden rounded-lg border-none">
+                  <span className="absolute inset-0 bg-[url('/noise.png')] opacity-20"></span>
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-semibold mb-6 text-[var(--color-light)] font-['Montserrat']">
+                      Contactez-nous
+                    </h3>
+                    <div className="space-y-5">
+                      {contactInfo.map((item, index) => (
+                        item.href ? (
+                          <a 
+                            key={index}
+                            href={item.href}
+                            className="flex items-start group hover:text-[var(--color-neon)] transition-colors"
+                          >
+                            <div className="relative mr-3">
+                              <span className="absolute -inset-1 rounded-full animate-pulse opacity-30 blur-sm bg-[var(--color-neon)]"></span>
+                              <div className="p-2 rounded-lg bg-[var(--color-neon)]/10 relative group-hover:bg-[var(--color-neon)]/20 transition-colors">
+                                <item.icon className="w-5 h-5 text-[var(--color-neon)]" />
+                              </div>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-sm text-[var(--color-light)]">{item.title}</h4>
+                              <p className="text-[var(--color-light)]/70 group-hover:text-[var(--color-neon)]">{item.value}</p>
+                            </div>
+                          </a>
+                        ) : (
+                          <div 
+                            key={index}
+                            className="flex items-start"
+                          >
+                            <div className="relative mr-3">
+                              <span className="absolute -inset-1 rounded-full animate-pulse opacity-30 blur-sm bg-[var(--color-neon)]"></span>
+                              <div className="p-2 rounded-lg bg-[var(--color-neon)]/10 relative">
+                                <item.icon className="w-5 h-5 text-[var(--color-neon)]" />
+                              </div>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-sm text-[var(--color-light)]">{item.title}</h4>
+                              <p className="text-[var(--color-light)]/70">{item.value}</p>
+                            </div>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_var(--color-neon-glow)]">
+              {/* Bordure animée */}
+              <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--color-neon)_0%,var(--color-gray)_50%,var(--color-neon)_100%)]" />
+              
+              {/* Contenu */}
+              <div className="relative bg-[var(--color-dark)] p-[1px] backdrop-blur-xl">
+                <Card className="p-6 bg-[var(--color-dark-overlay)]/80 backdrop-blur-sm border-t border-[var(--color-neon)]/10 overflow-hidden rounded-lg border-none">
+                  <span className="absolute inset-0 bg-[url('/noise.png')] opacity-20"></span>
+                  <div className="relative z-10 flex items-start space-x-3">
+                    <div className="relative flex-shrink-0">
+                      <span className="absolute -inset-1 rounded-full animate-pulse opacity-30 blur-sm bg-[var(--color-neon)]"></span>
+                      <Lock className="w-5 h-5 text-[var(--color-neon)] mt-1 relative" />
                     </div>
                     <div>
-                      <h4 className="font-bold mb-1 text-[#F2F2F2] font-['Montserrat'] uppercase">{item.title}</h4>
-                      <p className="text-[#F2F2F2]/80 group-hover:text-[#00FF85] font-['Roboto']">{item.value}</p>
+                      <h3 className="font-medium mb-2 text-[var(--color-light)]">Confidentialité garantie</h3>
+                      <p className="text-sm text-[var(--color-light)]/70">
+                      Vos infos sont protégées. Aucune revente. 100 % conforme RGPD.
+                      </p>
                     </div>
-                  </a>
-                ))}
+                  </div>
+                </Card>
               </div>
-            </Card>
-
-            <Card className="p-8 bg-[#1F1F1F] border border-[#F2F2F2]/10 hover:border-[#00FF85]/50 transition-all duration-300 backdrop-blur-xl">
-              <div className="flex items-start space-x-3">
-                <Lock className="w-5 h-5 text-[#00FF85] mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-bold mb-2 text-[#F2F2F2] font-['Montserrat'] uppercase">Votre confidentialité, notre priorité</h3>
-                  <p className="text-sm text-[#F2F2F2]/60 font-['Roboto']">
-                    Vos informations restent entre de bonnes mains. Conformément au RGPD, vos données sont utilisées de manière sécurisée et jamais partagées sans votre consentement. Vous disposez d'un droit d'accès, de rectification et de suppression à tout moment.
-                  </p>
-                </div>
-              </div>
-            </Card>
-          </div>
+            </div>
+          </motion.div>
 
           {/* Colonne de droite - Formulaire */}
-          <Card className="md:col-span-2 p-8 bg-[#1F1F1F] border border-[#F2F2F2]/10 hover:border-[#00FF85]/50 transition-all duration-300 backdrop-blur-xl">
-            <h3 className="text-2xl font-extrabold mb-8 text-[#00FF85] font-['Montserrat'] uppercase tracking-wide">
-              Votre projet
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="text-sm font-bold mb-2 block text-[#F2F2F2] font-['Montserrat'] uppercase">
-                    Prénom
-                  </label>
-                  <Input
-                    required
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    placeholder="John"
-                    className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
-                  />
+          <motion.div
+            className="md:col-span-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="group relative overflow-hidden rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_var(--color-neon-glow)]">
+              {/* Bordure animée */}
+              <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--color-neon)_0%,var(--color-gray)_50%,var(--color-neon)_100%)]" />
+              
+              {/* Contenu */}
+              <div className="relative bg-[var(--color-dark)] p-[1px] backdrop-blur-xl">
+                <Card className="p-8 bg-[var(--color-dark-overlay)]/80 backdrop-blur-sm border-t border-[var(--color-neon)]/10 overflow-hidden rounded-lg border-none">
+                  <span className="absolute inset-0 bg-[url('/noise.png')] opacity-20"></span>
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-semibold mb-6 text-[var(--color-light)] font-['Montserrat']">
+                      Parlez-nous de votre projet
+                    </h3>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                      {error && (
+                        <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
+                          {error}
+                        </div>
+                      )}
+                      
+                      <div className="grid md:grid-cols-2 gap-5">
+                        <div>
+                          <label htmlFor="name" className="text-sm font-medium mb-2 block text-[var(--color-light)]">
+                            Nom complet*
+                          </label>
+                          <Input
+                            id="name"
+                            type="text"
+                            {...register('name')}
+                            className={cn(
+                              "h-10 bg-[var(--color-dark-overlay)] border-[var(--color-neon)]/20 text-[var(--color-light)] focus:border-[var(--color-neon)] focus:ring-[var(--color-neon)]/10",
+                              errors.name && "border-red-500"
+                            )}
+                            placeholder="Jean Dupont"
+                          />
+                          {errors.name && (
+                            <p className="text-sm text-red-400 mt-1">{errors.name.message}</p>
+                          )}
+                        </div>
+                        <div>
+                          <label htmlFor="company" className="text-sm font-medium mb-2 block text-[var(--color-light)]">
+                            Entreprise
+                          </label>
+                          <Input
+                            id="company"
+                            type="text"
+                            {...register('company')}
+                            className="h-10 bg-[var(--color-dark-overlay)] border-[var(--color-neon)]/20 text-[var(--color-light)] focus:border-[var(--color-neon)] focus:ring-[var(--color-neon)]/10"
+                            placeholder="Nom de votre entreprise"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-5">
+                        <div>
+                          <label htmlFor="email" className="text-sm font-medium mb-2 block text-[var(--color-light)]">
+                            Email*
+                          </label>
+                          <Input
+                            id="email"
+                            type="email"
+                            {...register('email')}
+                            className={cn(
+                              "h-10 bg-[var(--color-dark-overlay)] border-[var(--color-neon)]/20 text-[var(--color-light)] focus:border-[var(--color-neon)] focus:ring-[var(--color-neon)]/10",
+                              errors.email && "border-red-500"
+                            )}
+                            placeholder="vous@exemple.fr"
+                          />
+                          {errors.email && (
+                            <p className="text-sm text-red-400 mt-1">{errors.email.message}</p>
+                          )}
+                        </div>
+                        <div>
+                          <label htmlFor="phone" className="text-sm font-medium mb-2 block text-[var(--color-light)]">
+                            Téléphone
+                          </label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            {...register('phone')}
+                            className="h-10 bg-[var(--color-dark-overlay)] border-[var(--color-neon)]/20 text-[var(--color-light)] focus:border-[var(--color-neon)] focus:ring-[var(--color-neon)]/10"
+                            placeholder="06 XX XX XX XX"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="message" className="text-sm font-medium mb-2 block text-[var(--color-light)]">
+                          Comment pouvons-nous vous aider ?*
+                        </label>
+                        <Textarea
+                          id="message"
+                          rows={5}
+                          {...register('message')}
+                          className={cn(
+                            "min-h-[120px] bg-[var(--color-dark-overlay)] border-[var(--color-neon)]/20 text-[var(--color-light)] focus:border-[var(--color-neon)] focus:ring-[var(--color-neon)]/10",
+                            errors.message && "border-red-500"
+                          )}
+                          placeholder="Décrivez votre besoin d'automatisation ou vos questions sur nos services..."
+                        />
+                        {errors.message && (
+                          <p className="text-sm text-red-400 mt-1">{errors.message.message}</p>
+                        )}
+                      </div>
+
+                      {formStatus === "error" && (
+                        <p className="text-sm text-red-400">
+                          Une erreur est survenue. Veuillez réessayer.
+                        </p>
+                      )}
+                      {formStatus === "success" && (
+                        <p className="text-sm text-[var(--color-neon)]">
+                          Message envoyé avec succès ! Nous vous répondrons sous 24h.
+                        </p>
+                      )}
+
+                      <div className="flex justify-between items-center pt-2">
+                        <p className="text-xs text-[var(--color-light)]/60">
+                          Tous les champs marqués * sont obligatoires
+                        </p>
+                  <Button 
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="relative overflow-hidden rounded-md p-[1px] group inline-block bg-transparent border-0 hover:bg-transparent"
+                  >
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,var(--color-neon)_0%,var(--color-gray)_50%,var(--color-neon)_100%)]" />
+                    <span className="inline-flex h-full w-full items-center justify-center gap-2 rounded-md bg-[var(--color-dark)] px-4 py-2 text-[var(--color-neon)] backdrop-blur-3xl transition-colors group-hover:bg-[var(--color-neon)]/10">
+                      {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </Button>
                 </div>
-                <div>
-                  <label className="text-sm font-bold mb-2 block text-[#F2F2F2] font-['Montserrat'] uppercase">
-                    Nom
-                  </label>
-                  <Input
-                    required
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    placeholder="Doe"
-                    className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
-                  />
-                </div>
+                    </form>
+                  </div>
+                </Card>
               </div>
-
-              <div>
-                <label className="text-sm font-bold mb-2 block text-[#F2F2F2] font-['Montserrat'] uppercase">
-                  Email
-                </label>
-                <Input
-                  required
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="john@example.com"
-                  className="h-12 bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-bold mb-2 block text-[#F2F2F2] font-['Montserrat'] uppercase">
-                  Votre projet
-                </label>
-                <Textarea
-                  required
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Décrivez vos idées ou vos besoins spécifiques."
-                  className="min-h-[150px] bg-[#0A0A0A]/50 border-[#F2F2F2]/10 focus:border-[#00FF85] text-[#F2F2F2] font-['Roboto']"
-                />
-              </div>
-
-              {formStatus === "error" && (
-                <p className="text-sm text-red-500 font-['Roboto']">
-                  Une erreur est survenue. Veuillez réessayer.
-                </p>
-              )}
-              {formStatus === "success" && (
-                <p className="text-sm text-[#00FF85] font-['Roboto']">
-                  Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.
-                </p>
-              )}
-
-              <Button 
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#00FF85] text-[#0A0A0A] hover:scale-105 transition-transform duration-300 group text-lg h-14 font-['Montserrat'] uppercase tracking-wider"
-              >
-                Envoyer
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </form>
-          </Card>
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

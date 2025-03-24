@@ -6,23 +6,43 @@
 
 ## À propos
 
-Site web de Dark Data Labs, une entreprise spécialisée dans l'analyse de données et l'automatisation pour les PME.
+Site web one-page de Dark Data Labs, entreprise spécialisée dans l'automatisation et l'intelligence artificielle pour indépendants et PME.
 
 ### Fonctionnalités principales
-- Landing page moderne et responsive
-- Présentation détaillée des services et solutions
-- Système de newsletter avec emails de confirmation personnalisés
-- Pages légales conformes RGPD
-- Interface utilisateur intuitive et animations fluides
+
+- Site one-page avec sections thématiques efficaces
+- Design impactant et conversationnel
+- Présentation ciblée des services avec exemples concrets
+- Témoignages clients et études de cas réels
+- Appel à l'action clair pour maximiser les conversions
+- Interface responsive et animations engageantes
+
+## Structure de la page
+
+Le site se compose d'une page unique avec les sections suivantes :
+
+1. **🔥 Accroche Captivante** - Section héro avec promesse forte
+2. **🌟 Promesse Principale** - Présentation concise de l'offre
+3. **🎯 Présentation du Problème** - Exemples concrets et situations client
+4. **⚠️ Risques** - Conséquences de l'inaction
+5. **💡 Solution Dark Data Labs** - Proposition de valeur
+6. **🔐 Nos Offres** - Services de consulting et formation
+7. **🏅 Résultats & Preuves** - Témoignages et études de cas
+8. **✅ FAQ** - Réponses aux objections fréquentes
+9. **🚀 Appel à l'action** - Incitation à la prise de contact
 
 ## Technologies
 
-- Next.js 14
+- Next.js 15.1.3 avec App Router
 - React 18
 - TypeScript
 - Tailwind CSS
-- Jest & Testing Library
-- Framer Motion
+- Framer Motion pour les animations
+- Radix UI pour les composants accessibles
+- React Hook Form et Zod pour la validation des formulaires
+- Intersection Observer pour animations au scroll
+- Embla Carousel pour les témoignages clients
+- Lucide React pour les icônes
 
 ## Installation
 
@@ -40,16 +60,19 @@ npm run dev
 ## Configuration
 
 1. Créez un fichier `.env.local` à la racine du projet :
+
 ```env
 BREVO_API_KEY=votre_clé_api_brevo
 ```
 
-2. Installez les dépendances :
+1. Installez les dépendances :
+
 ```bash
 npm install
 ```
 
-3. Lancez le serveur de développement :
+1. Lancez le serveur de développement :
+
 ```bash
 npm run dev
 ```
@@ -66,13 +89,18 @@ npm run test:integration
 # Lancer les tests d'accessibilité
 npm run test:accessibility
 
+# Lancer les tests A/B sur les CTA
+npm run test:ab
+
 # Mode watch
 npm run test:watch
 ```
 
 ## Qualité du Code
 
-- **Coverage**: > 80% sur toutes les métriques
+- **Performance**: Optimisation des Core Web Vitals
+- **Accessibilité**: Conformité WCAG
+- **UX/UI**: Tests utilisateurs et analytics de conversion
 - **Linting**: ESLint avec configuration stricte
 - **Types**: TypeScript strict mode
 - **Tests**: Jest, Testing Library, et tests d'accessibilité
@@ -89,14 +117,19 @@ npm run test:watch
 - `npm run build`: Build le projet
 - `npm run start`: Lance le serveur de production
 - `npm run lint`: Lance ESLint
+- `npm run lint:fix`: Corrige automatiquement les erreurs de lint
+- `npm run format`: Formate le code avec Prettier
+- `npm run clean`: Nettoie les dossiers de build
 - `npm test`: Lance les tests avec couverture
 - `npm run test:ci`: Lance les tests en mode CI
+- `npm run analyze`: Analyse la taille du bundle
 
 ## Sécurité
 
 - Analyse CodeQL automatique
 - Dépendances régulièrement mises à jour
 - Tests de sécurité dans la CI/CD
+- Protection des données utilisateurs (formulaire de contact)
 
 ## Licence
 
@@ -104,24 +137,50 @@ Ce projet est sous licence privée. Tous droits réservés.
 
 ## Structure du projet
 
-```
-├── app/                # Configuration Next.js et pages principales
-│   ├── api/           # Routes API (newsletter)
-│   ├── legal/         # Pages légales
-│   └── privacy/       # Politique de confidentialité
-├── components/         # Composants React réutilisables
-│   ├── sections/      # Sections principales du site
-│   └── ui/            # Composants UI réutilisables
-├── public/            # Assets statiques
-└── styles/            # Fichiers CSS globaux
+```bash
+project/
+├── app/                 # Page principale Next.js (App Router)
+│   ├── api/             # Routes API (formulaire contact)
+│   ├── legal/           # Page mentions légales
+│   ├── privacy/         # Page politique de confidentialité
+│   ├── layout.tsx       # Layout principal
+│   └── page.tsx         # Page d'accueil
+├── components/
+│   ├── ui/              # Composants d'interface réutilisables
+│   ├── layout/          # Composants de mise en page (Header, Footer, etc.)
+│   ├── shared/          # Composants partagés entre sections
+│   ├── legal/           # Composants spécifiques aux pages légales
+│   └── sections/        # Sections de la page d'accueil
+│       ├── hero/        # Section d'accroche
+│       ├── problem/     # Section problème
+│       ├── risk/        # Section risques
+│       ├── solution/    # Section solution
+│       ├── offers/      # Section offres
+│       ├── process/     # Section processus
+│       ├── testimonials/# Section témoignages
+│       ├── faq/         # Section FAQ
+│       ├── cta/         # Section appel à l'action
+│       └── contact/     # Section formulaire de contact
+├── hooks/               # Hooks personnalisés
+├── lib/                 # Utilitaires et helpers
+├── public/              # Assets statiques
+├── styles/              # Fichiers CSS globaux
+└── docs/                # Documentation technique
 ```
 
-## Déploiement
+## Contenu Marketing
 
-Le site est optimisé pour le déploiement sur Netlify.
+Le site présente une structure optimisée pour le marketing avec :
+
+- Accroche immédiate et promesse de valeur
+- Exemples concrets avec des cas clients réels
+- Section "problème-solution" pour adresser les points de douleur
+- Témoignages authentiques avec résultats chiffrés
+- Design conversationnel pour maximiser les prises de contact
 
 ## Auteur
 
 Damien Bihel
+
 - [LinkedIn](https://www.linkedin.com/in/damienbihel/)
 - [GitHub](https://github.com/DamienBihel)

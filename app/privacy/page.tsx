@@ -152,9 +152,7 @@ export default function PrivacyPage() {
 
               <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">9.2 Sous-traitants</h3>
               <ul className="space-y-2 font-roboto mb-6">
-                <li>Netlify (USA) - Hébergement</li>
-                <li>Matomo (EU) - Analytique</li>
-                <li>Brevo (EU) - Emails</li>
+                <li>Hostinger (Paris) - Hébergement</li>
               </ul>
 
               <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">9.3 Garanties</h3>

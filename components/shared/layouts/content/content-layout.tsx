@@ -3,7 +3,7 @@
 import { ReactNode } from "react"
 import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/navbar"
-import { Footer } from "@/components/sections/footer"
+import { Footer } from "@/components/layout/footer"
 
 interface ContentLayoutProps {
   children: ReactNode
