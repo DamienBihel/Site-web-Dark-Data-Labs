@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { CookieBanner } from "@/components/ui/cookie-banner"
+import Script from "next/script"
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -59,10 +61,17 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            <CookieBanner />
           </div>
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
+        <Script
+          id="umami-script"
+          strategy="afterInteractive"
+          src="https://analytics.umami.is/script.js"
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+        />
       </body>
     </html>
   )

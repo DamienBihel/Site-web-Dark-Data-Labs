@@ -37,7 +37,6 @@ export default function PrivacyPage() {
                   <li>Adresse email professionnelle</li>
                   <li>Numéro de téléphone (optionnel)</li>
                   <li>Nom de l&apos;entreprise</li>
-                  <li>Poste occupé</li>
                   <li>Messages que vous nous envoyez</li>
                 </ul>
               </div>
@@ -125,19 +124,63 @@ export default function PrivacyPage() {
           </section>
 
           <section className="mb-12">
+            <h2 className="text-3rem font-montserrat font-extrabold uppercase tracking-wider mb-6 text-[#00FF85]">7. Outils et Services Utilisés</h2>
+            <div className="bg-[#1F1F1F] rounded-lg p-6 hover:shadow-[0_0_20px_rgba(0,255,133,0.2)] transition-all duration-300">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">Umami Analytics</h3>
+                  <p className="font-roboto mb-2">Outil d'analyse respectueux de la vie privée :</p>
+                  <ul className="space-y-2 font-roboto">
+                    <li>Ne collecte aucun cookie</li>
+                    <li>Auto-hébergé à Paris, France</li>
+                    <li>Données anonymisées</li>
+                    <li>Pas de suivi entre sites</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">Mautic</h3>
+                  <p className="font-roboto mb-2">Plateforme de gestion des contacts :</p>
+                  <ul className="space-y-2 font-roboto">
+                    <li>Auto-hébergée à Paris, France</li>
+                    <li>Inscription newsletter avec consentement</li>
+                    <li>Option de désinscription dans chaque email</li>
+                    <li>Conservation limitée des données</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">EmailJS</h3>
+                  <p className="font-roboto mb-2">Service d'envoi d'emails :</p>
+                  <ul className="space-y-2 font-roboto">
+                    <li>Utilisé uniquement pour le formulaire de contact</li>
+                    <li>Traitement limité aux données nécessaires</li>
+                    <li>Protection par chiffrement</li>
+                    <li>Pas d'utilisation commerciale des données</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="mb-12">
             <h2 className="text-3rem font-montserrat font-extrabold uppercase tracking-wider mb-6 text-[#00FF85]">8. Cookies et Traceurs</h2>
             <div className="bg-[#1F1F1F] rounded-lg p-6 hover:shadow-[0_0_20px_rgba(0,255,133,0.2)] transition-all duration-300">
-              <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">8.1 Types de Cookies</h3>
+              <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">8.1 Cookies utilisés</h3>
+              <p className="font-roboto mb-4">
+                Notre site utilise un nombre minimal de cookies pour assurer son bon fonctionnement :
+              </p>
               <ul className="space-y-2 font-roboto mb-6">
-                <li>Cookies essentiels (durée : session)</li>
-                <li>Cookies analytiques (durée : 13 mois)</li>
-                <li>Cookies de préférences (durée : 6 mois)</li>
-                <li>Cookies marketing (durée : 30 jours, avec consentement)</li>
+                <li>Cookie de session Next.js (durée : session) - Nécessaire au fonctionnement technique du site</li>
+                <li>Cookies techniques Umami (_ko_id et ko_sid) - Utilisés par notre outil d'analyse pour mesurer l'audience du site (durée : 2024 jours)</li>
               </ul>
               
-              <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">8.2 Gestion des Cookies</h3>
+              <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">8.2 Outils d'analyse respectueux de la vie privée</h3>
               <p className="font-roboto mb-4">
-                Vous pouvez à tout moment modifier vos préférences via notre panneau de configuration des cookies accessible depuis le bouton "Paramètres des cookies" en bas de page.
+                Pour l'analyse de notre site, nous utilisons Umami, un outil d'analyse qui respecte votre vie privée. Umami utilise deux cookies techniques qui ne contiennent aucune information personnelle et ne permettent pas de vous suivre à travers différents sites. Cette approche est conforme aux recommandations de la CNIL concernant les outils d'analyse d'audience.
+              </p>
+              
+              <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">8.3 Absence de cookies marketing ou publicitaires</h3>
+              <p className="font-roboto mb-4">
+                Notre site ne dépose aucun cookie publicitaire, marketing ou de traçage. Nous ne vendons pas vos données et ne partageons pas vos informations de navigation avec des tiers à des fins commerciales.
               </p>
             </div>
           </section>
@@ -147,17 +190,18 @@ export default function PrivacyPage() {
             <div className="bg-[#1F1F1F] rounded-lg p-6 hover:shadow-[0_0_20px_rgba(0,255,133,0.2)] transition-all duration-300">
               <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">9.1 Localisation des Données</h3>
               <p className="font-roboto mb-4">
-                Vos données sont principalement hébergées dans l'Union Européenne. Certaines données peuvent être transférées vers nos sous-traitants situés hors UE.
+                Toutes vos données sont hébergées dans l'Union Européenne. Nos outils d'analyse (Umami) et de gestion de contacts (Mautic) sont auto-hébergés sur nos serveurs situés à Paris, France, garantissant ainsi que vos données restent dans l'UE et bénéficient pleinement de la protection du RGPD.
               </p>
 
               <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">9.2 Sous-traitants</h3>
               <ul className="space-y-2 font-roboto mb-6">
-                <li>Hostinger (Paris) - Hébergement</li>
+                <li>Hostinger (Paris) - Hébergement du site et de nos outils</li>
+                <li>EmailJS - Service d'envoi d'emails pour le formulaire de contact</li>
               </ul>
 
               <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">9.3 Garanties</h3>
               <p className="font-roboto">
-                Ces transferts sont encadrés par les Clauses Contractuelles Types de la Commission Européenne et des mesures de sécurité appropriées.
+                Pour les services non auto-hébergés, les transferts sont encadrés par les Clauses Contractuelles Types de la Commission Européenne et des mesures de sécurité appropriées. Notre politique privilégie l'auto-hébergement en Europe pour garantir un niveau élevé de protection de vos données.
               </p>
             </div>
           </section>
@@ -196,7 +240,7 @@ export default function PrivacyPage() {
                   <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">Consentement</h3>
                   <ul className="space-y-2 font-roboto">
                     <li>Cookies marketing</li>
-                    <li>Newsletter</li>
+                    <li>Newsletter (via Mautic, auto-hébergé en France)</li>
                     <li>Études et sondages</li>
                   </ul>
                 </div>
@@ -205,12 +249,13 @@ export default function PrivacyPage() {
                   <ul className="space-y-2 font-roboto">
                     <li>Gestion du compte utilisateur</li>
                     <li>Fourniture des services</li>
-                    <li>Support client</li>
+                    <li>Support client (via EmailJS)</li>
                   </ul>
                 </div>
                 <div>
                   <h3 className="font-montserrat font-bold text-[#00FF85] mb-4">Intérêt Légitime</h3>
                   <ul className="space-y-2 font-roboto">
+                    <li>Analyse statistique anonyme du site (via Umami, sans cookies)</li>
                     <li>Amélioration des services</li>
                     <li>Sécurité du site</li>
                     <li>Prévention de la fraude</li>
