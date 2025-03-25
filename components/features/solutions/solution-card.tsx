@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
-interface SolutionCardProps {
+interface ServiceCardProps {
   name: string
   price: string
   description: string
@@ -21,7 +21,7 @@ interface SolutionCardProps {
   href: string
 }
 
-export function SolutionCard({ 
+export function ServiceCard({ 
   name, 
   price, 
   description, 
@@ -30,7 +30,7 @@ export function SolutionCard({
   targetAudience,
   index,
   href
-}: SolutionCardProps) {
+}: ServiceCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { SolutionCard } from "./solution-card"
+import { ServiceCard } from "./solution-card"
 import { GuaranteeSection } from "./guarantee-section"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -109,7 +109,7 @@ export function Solutions() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {solutions.map((solution, index) => (
-            <SolutionCard key={solution.name} {...solution} index={index} />
+            <ServiceCard key={solution.name} {...solution} index={index} />
           ))}
         </div>
 
