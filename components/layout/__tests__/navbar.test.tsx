@@ -87,29 +87,40 @@ describe('Navbar Component', () => {
   })
 
   it('renders the logo', () => {
-    const logo = screen.getByTestId('logo')
-    expect(logo).toBeInTheDocument()
+    const nextLinks = screen.getAllByTestId('next-link')
+    expect(nextLinks.length).toBeGreaterThan(0)
+    
+    const darkText = screen.getByText('DARK')
+    expect(darkText).toBeInTheDocument()
+    
+    const dataLabsText = screen.getByText('DATA LABS')
+    expect(dataLabsText).toBeInTheDocument()
   })
 
   it('renders the site name', () => {
-    const siteName = screen.getByText('Dark Data Labs')
-    expect(siteName).toBeInTheDocument()
+    const darkText = screen.getByText('DARK')
+    const dataLabsText = screen.getByText('DATA LABS')
+    expect(darkText).toBeInTheDocument()
+    expect(dataLabsText).toBeInTheDocument()
   })
 
   it('renders all main navigation items', () => {
     const navigationMenu = screen.getByTestId('navigation-menu')
     expect(navigationMenu).toBeInTheDocument()
 
-    const menuTriggers = screen.getAllByTestId('navigation-menu-trigger')
-    expect(menuTriggers).toHaveLength(3)
-    
     const menuItems = screen.getAllByTestId('navigation-menu-item')
-    expect(menuItems).toHaveLength(3)
+    expect(menuItems).toHaveLength(5)
+
+    const menuLinks = screen.getAllByTestId('navigation-menu-link')
+    expect(menuLinks).toHaveLength(5)
   })
 
   it('renders navigation menu content', () => {
-    const menuContent = screen.getAllByTestId('navigation-menu-content')
-    expect(menuContent).toHaveLength(3)
+    const menuItems = screen.getAllByTestId('navigation-menu-item')
+    expect(menuItems).toHaveLength(5)
+
+    const menuLinks = screen.getAllByTestId('navigation-menu-link')
+    expect(menuLinks).toHaveLength(5)
   })
 
   it('renders navigation links', () => {
@@ -118,29 +129,25 @@ describe('Navbar Component', () => {
   })
 
   it('renders the contact link', () => {
-    const contactLink = screen.getByRole('link', { name: /contact/i })
+    const contactLink = screen.getByRole('link', { name: /réserver un audit gratuit/i })
     expect(contactLink).toBeInTheDocument()
     expect(contactLink).toHaveAttribute('href', '/contact')
   })
 
   describe('Accessibility', () => {
-    it('has proper ARIA attributes', () => {
-      const navigationMenu = screen.getByTestId('navigation-menu')
-      expect(navigationMenu).toBeInTheDocument()
-    })
-
     it('supports keyboard navigation', () => {
-      const menuTriggers = screen.getAllByTestId('navigation-menu-trigger')
-      menuTriggers.forEach(trigger => {
-        expect(trigger).toBeInTheDocument()
-        fireEvent.keyDown(trigger, { key: 'Enter' })
+      const menuLinks = screen.getAllByTestId('navigation-menu-link')
+      menuLinks.forEach(link => {
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('tabindex', '0')
+        fireEvent.keyDown(link, { key: 'Enter' })
       })
     })
 
-    it('has proper contrast', () => {
-      const menuItems = screen.getAllByTestId('navigation-menu-item')
-      menuItems.forEach(item => {
-        expect(item).toBeVisible()
+    it('provides appropriate ARIA labels', () => {
+      const menuLinks = screen.getAllByTestId('navigation-menu-link')
+      menuLinks.forEach(link => {
+        expect(link).toHaveAttribute('aria-label')
       })
     })
   })

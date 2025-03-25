@@ -159,7 +159,10 @@ npm run dev
 
 ```env
 # Fichier .env.local
-BREVO_API_KEY=votre_clé_api_brevo  # Clé API pour l'envoi d'emails via Brevo
+NEXT_PUBLIC_API_URL=http://localhost:3000/api  # URL de base de l'API
+EMAILJS_SERVICE_ID=votre_service_id  # ID du service EmailJS
+EMAILJS_TEMPLATE_ID=votre_template_id  # ID du template EmailJS
+EMAILJS_USER_ID=votre_user_id  # ID utilisateur EmailJS
 ```
 
 ---
@@ -225,7 +228,6 @@ BREVO_API_KEY=votre_clé_api_brevo  # Clé API pour l'envoi d'emails via Brevo
 #### 3. Fonctionnalités
 
 - [ ] Formulaire de contact avec validation
-- [ ] Intégration de l'API Brevo pour le suivi
 - [ ] Système de notifications toast
 - [ ] Animations déclenchées au scroll
 - [ ] Carrousel de témoignages interactif

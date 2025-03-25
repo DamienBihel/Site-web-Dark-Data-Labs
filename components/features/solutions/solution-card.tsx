@@ -1,12 +1,11 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
-interface ServiceCardProps {
+interface SolutionCardProps {
   name: string
   price: string
   description: string
@@ -19,71 +18,84 @@ interface ServiceCardProps {
   targetAudience: string[]
   index: number
   href: string
+  className?: string
 }
 
-export function ServiceCard({ 
-  name, 
-  price, 
-  description, 
-  features, 
+export function SolutionCard({
+  name,
+  price,
+  description,
+  features,
   demoProject,
   targetAudience,
   index,
-  href
-}: ServiceCardProps) {
+  href,
+  className
+}: SolutionCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="h-full"
+      data-testid="solution-card"
     >
-      <Card className="flex flex-col h-full">
+      <Card className={cn('relative overflow-hidden', className)}>
         <CardHeader>
-          <CardTitle className="text-xl sm:text-2xl">{name}</CardTitle>
-          <CardDescription className="text-base">{description}</CardDescription>
-          <p className="text-xl sm:text-2xl font-bold">À partir de {price}€</p>
+          <CardTitle id={`solution-title-${index}`}>{name}</CardTitle>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow space-y-6">
-          <div>
-            <h4 className="font-semibold mb-3">Ce que vous obtenez :</h4>
-            <ul className="space-y-2.5">
-              {features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="text-secondary mt-1">✓</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
+        <CardContent>
+          <div className="mb-6">
+            <div className="text-3xl font-bold" aria-label={`Prix : ${price}€`}>
+              {price}<span className="text-lg">€</span>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-3">Projet de démonstration :</h4>
-            <p className="text-sm font-medium text-secondary mb-3">{demoProject.title}</p>
-            <ul className="space-y-2">
-              {demoProject.points.map((point, i) => (
-                <li key={i} className="text-sm text-muted-foreground">• {point}</li>
-              ))}
-            </ul>
-            <p className="text-sm font-medium mt-3">ROI projeté : {demoProject.roi}</p>
-          </div>
+          <div className="space-y-6">
+            <div>
+              <h4 id={`features-title-${index}`} className="text-lg font-semibold mb-2">Ce que vous obtenez</h4>
+              <ul aria-labelledby={`features-title-${index}`} className="space-y-2">
+                {features.map((feature, i) => (
+                  <li key={i} className="flex items-start" data-testid="feature-item">
+                    <span className="sr-only">•</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-semibold mb-3">Pour qui ?</h4>
-            <ul className="space-y-2">
-              {targetAudience.map((audience, i) => (
-                <li key={i} className="text-sm text-muted-foreground">• {audience}</li>
-              ))}
-            </ul>
+            <div>
+              <h4 id={`demo-title-${index}`} className="text-lg font-semibold mb-2">Projet de démonstration</h4>
+              <div>
+                <h5 className="font-medium mb-2">{demoProject.title}</h5>
+                <ul className="space-y-2">
+                  {demoProject.points.map((point, i) => (
+                    <li key={i} className="flex items-start">
+                      <span className="sr-only">•</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2">ROI : {demoProject.roi}</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 id={`audience-title-${index}`} className="text-lg font-semibold mb-2">Pour qui</h4>
+              <ul className="space-y-2">
+                {targetAudience.map((audience, i) => (
+                  <li key={i} className="flex items-start">
+                    <span className="sr-only">•</span>
+                    {audience}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </CardContent>
-        <CardFooter className="pt-6">
-          <Button className="w-full" size="lg" asChild>
-            <Link href={href}>
-              Je choisis {name}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+        <CardFooter>
+          <Button asChild className="w-full" aria-label={`Choisir ${name}`}>
+            <a href={href} tabIndex={0}>Choisir {name}</a>
           </Button>
         </CardFooter>
       </Card>

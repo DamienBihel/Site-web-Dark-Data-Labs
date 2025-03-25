@@ -28,13 +28,13 @@ export function PricingCard({ name, price, description, features, roi, ideal, in
         <CardHeader>
           <CardTitle>{name}</CardTitle>
           <CardDescription>{description}</CardDescription>
-          <p className="text-3xl font-bold">{price}€</p>
+          <p className="text-3xl font-bold" aria-label={`Prix : ${price}€`}>{price}€</p>
         </CardHeader>
         <CardContent className="flex-grow">
-          <ul className="space-y-2">
+          <ul className="space-y-2" role="list">
             {features.map((feature, i) => (
-              <li key={i} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-secondary" />
+              <li key={i} className="flex items-center gap-2" role="listitem" aria-label={feature}>
+                <Check className="h-4 w-4 text-secondary" aria-hidden="true" />
                 <span className="text-muted-foreground">{feature}</span>
               </li>
             ))}

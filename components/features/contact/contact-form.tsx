@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Le nom est requis'),
-  email: z.string().email('Format d\'email invalide').min(1, 'L\'email est requis'),
+  email: z.string().min(1, 'L\'email est requis').email('Format d\'email invalide'),
   company: z.string().optional(),
   message: z.string().min(1, 'Le message est requis'),
 })
@@ -63,9 +63,15 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6" role="form">
+    <form 
+      onSubmit={handleSubmit(handleFormSubmit)} 
+      className="space-y-6" 
+      role="form"
+      data-testid="contact-form"
+      id="contact-form"
+    >
       {error && (
-        <p className="text-sm text-destructive mb-4">{error}</p>
+        <p className="text-sm text-destructive mb-4" role="alert">{error}</p>
       )}
       <div>
         <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -75,9 +81,11 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           id="name"
           {...register('name')}
           className={cn(errors.name && 'border-destructive')}
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? 'name-error' : undefined}
         />
         {errors.name && (
-          <p className="text-sm text-destructive mt-1">{errors.name.message}</p>
+          <p id="name-error" className="text-sm text-destructive mt-1" role="alert">{errors.name.message}</p>
         )}
       </div>
 
@@ -90,9 +98,11 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           type="email"
           {...register('email')}
           className={cn(errors.email && 'border-destructive')}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? 'email-error' : undefined}
         />
         {errors.email && (
-          <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+          <p id="email-error" className="text-sm text-destructive mt-1" role="alert">{errors.email.message}</p>
         )}
       </div>
 
@@ -103,7 +113,13 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         <Input
           id="company"
           {...register('company')}
+          className={cn(errors.company && 'border-destructive')}
+          aria-invalid={!!errors.company}
+          aria-describedby={errors.company ? 'company-error' : undefined}
         />
+        {errors.company && (
+          <p id="company-error" className="text-sm text-destructive mt-1" role="alert">{errors.company.message}</p>
+        )}
       </div>
 
       <div>
@@ -112,12 +128,13 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
         </label>
         <Textarea
           id="message"
-          rows={5}
           {...register('message')}
           className={cn(errors.message && 'border-destructive')}
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? 'message-error' : undefined}
         />
         {errors.message && (
-          <p className="text-sm text-destructive mt-1">{errors.message.message}</p>
+          <p id="message-error" className="text-sm text-destructive mt-1" role="alert">{errors.message.message}</p>
         )}
       </div>
 

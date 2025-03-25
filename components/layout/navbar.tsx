@@ -44,7 +44,7 @@ const navigationItems = [
   },
   {
     title: "Contact",
-    href: "#contact-form",
+    href: "/contact",
     description: "Réserver un audit gratuit"
   }
 ]
@@ -67,7 +67,7 @@ export function Navbar() {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
         isScrolled 
-          ? "bg-[var(--color-dark)]/95 backdrop-blur-xl border-b border-[var(--color-light)]/10" 
+          ? "bg-background/95 backdrop-blur-xl border-b border-[var(--color-light)]/10" 
           : "bg-transparent"
       )}
       initial={{ opacity: 0, y: -20 }}
@@ -81,17 +81,24 @@ export function Navbar() {
       )}
 
       <div className="container flex h-16 items-center relative">
-        <Logo className="mr-8" />
+        <Logo className="mr-8" data-testid="logo" />
         <NavigationMenu data-testid="navigation-menu">
           <NavigationMenuList className="space-x-2" data-testid="navigation-menu-list">
             {navigationItems.map((item) => (
               <NavigationMenuItem key={item.title} data-testid="navigation-menu-item">
-                <NavigationMenuLink 
-                  href={item.href}
-                  className="font-['Montserrat'] font-bold uppercase tracking-wide text-[var(--color-light)] hover:text-[var(--color-neon)] transition-colors bg-transparent hover:bg-[var(--color-neon)]/10"
-                  data-testid="navigation-menu-link"
-                >
-                  {item.title}
+                <NavigationMenuLink asChild>
+                  <a
+                    className={cn(
+                      navigationMenuTriggerStyle(),
+                      "font-['Montserrat'] font-bold uppercase tracking-wide text-[var(--color-light)] hover:text-[var(--color-neon)] transition-colors bg-transparent hover:bg-[var(--color-neon)]/10"
+                    )}
+                    href={item.href}
+                    aria-label={item.description}
+                    tabIndex={0}
+                    data-testid="navigation-menu-link"
+                  >
+                    {item.title}
+                  </a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
@@ -100,9 +107,11 @@ export function Navbar() {
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
             <Link
-              href="#contact-form"
-              className="px-6 py-2.5 text-sm font-bold leading-none rounded-md bg-[var(--color-neon)] text-[var(--color-dark)] hover:scale-105 transition-all duration-300 font-['Montserrat'] uppercase tracking-wider"
+              href="/contact"
+              className="font-['Montserrat'] font-bold uppercase tracking-wide text-[var(--color-light)] hover:text-[var(--color-neon)] transition-colors"
               data-testid="next-link"
+              aria-label="Réserver un audit gratuit"
+              tabIndex={0}
             >
               Audit Gratuit
             </Link>

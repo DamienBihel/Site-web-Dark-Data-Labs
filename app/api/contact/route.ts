@@ -12,34 +12,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    // Configuration pour EmailJS
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
-        'api-key': process.env.BREVO_API_KEY!,
-        'content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        sender: {
-          name: 'Dark Data Labs',
-          email: 'contact@darkdatalabs.fr'
+        service_id: process.env.EMAILJS_SERVICE_ID,
+        template_id: process.env.EMAILJS_TEMPLATE_ID,
+        user_id: process.env.EMAILJS_USER_ID,
+        template_params: {
+          from_name: `${firstName} ${lastName}`,
+          from_email: email,
+          message: message,
+          to_email: 'contact@darkdatalabs.fr',
         },
-        to: [{
-          email: 'contact@darkdatalabs.fr',
-          name: 'Dark Data Labs'
-        }],
-        replyTo: {
-          email: email,
-          name: `${firstName} ${lastName}`
-        },
-        subject: `Nouveau message de ${firstName} ${lastName}`,
-        htmlContent: `
-          <h2>Nouveau message de contact</h2>
-          <p><strong>Nom:</strong> ${firstName} ${lastName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <h3>Message:</h3>
-          <p>${message.replace(/\n/g, '<br>')}</p>
-        `,
       }),
     });
 

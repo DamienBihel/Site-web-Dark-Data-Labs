@@ -62,7 +62,10 @@ npm run dev
 1. Créez un fichier `.env.local` à la racine du projet :
 
 ```env
-BREVO_API_KEY=votre_clé_api_brevo
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+EMAILJS_SERVICE_ID=votre_service_id
+EMAILJS_TEMPLATE_ID=votre_template_id
+EMAILJS_USER_ID=votre_user_id
 ```
 
 1. Installez les dépendances :

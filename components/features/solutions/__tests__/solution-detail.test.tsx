@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { SolutionDetail } from '../SolutionDetail'
+import { SolutionDetail } from '../solution-detail'
 
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
@@ -14,20 +14,15 @@ describe('SolutionDetail', () => {
   const mockProps = {
     title: 'Test Solution',
     description: 'Test Description',
-    benefits: ['Benefit 1', 'Benefit 2'],
-    features: [
-      {
-        title: 'Feature 1',
-        description: 'Feature Description 1',
-        icon: '🔧'
-      },
-      {
-        title: 'Feature 2',
-        description: 'Feature Description 2',
-        icon: '⚡'
-      }
-    ],
-    technologies: ['Tech 1', 'Tech 2']
+    price: '999',
+    features: ['Feature 1', 'Feature 2'],
+    demoProject: {
+      title: 'Demo Project',
+      points: ['Point 1', 'Point 2'],
+      roi: '150%'
+    },
+    targetAudience: ['Audience 1', 'Audience 2'],
+    href: '/solutions/test'
   }
 
   it('renders solution details with correct content', () => {
@@ -37,23 +32,35 @@ describe('SolutionDetail', () => {
     expect(screen.getByText(mockProps.title)).toBeInTheDocument()
     expect(screen.getByText(mockProps.description)).toBeInTheDocument()
 
-    // Vérification des bénéfices
-    mockProps.benefits.forEach(benefit => {
-      expect(screen.getByText(benefit)).toBeInTheDocument()
-    })
+    // Vérification du prix
+    expect(screen.getByLabelText(/Prix : 999€/i)).toBeInTheDocument();
 
     // Vérification des features
     mockProps.features.forEach(feature => {
-      expect(screen.getByText(feature.title)).toBeInTheDocument()
-      expect(screen.getByText(feature.description)).toBeInTheDocument()
-      if (feature.icon) {
-        expect(screen.getByText(feature.icon)).toBeInTheDocument()
-      }
+      expect(screen.getByText(feature)).toBeInTheDocument()
     })
 
-    // Vérification des technologies
-    mockProps.technologies.forEach(tech => {
-      expect(screen.getByText(tech)).toBeInTheDocument()
+    // Vérification du projet de démonstration
+    expect(screen.getByText(mockProps.demoProject.title)).toBeInTheDocument()
+    
+    // Vérification des points du projet de démonstration
+    const demoPoints = screen.getAllByTestId('demo-point')
+    expect(demoPoints).toHaveLength(mockProps.demoProject.points.length)
+    mockProps.demoProject.points.forEach((point, index) => {
+      expect(demoPoints[index].textContent).toContain(point)
+    })
+    
+    // Vérification du ROI
+    const elements = screen.getAllByText((content, element) => {
+      return element?.textContent?.includes(mockProps.demoProject.roi) || false;
+    });
+    expect(elements.length).toBeGreaterThan(0);
+
+    // Vérification du public cible
+    const audienceItems = screen.getAllByTestId('audience-item')
+    expect(audienceItems).toHaveLength(mockProps.targetAudience.length)
+    mockProps.targetAudience.forEach((audience, index) => {
+      expect(audienceItems[index].textContent).toContain(audience)
     })
   })
 
@@ -66,32 +73,32 @@ describe('SolutionDetail', () => {
     expect(container.firstChild).toHaveClass(customClass)
   })
 
-  it('renders correct number of benefits', () => {
-    render(<SolutionDetail {...mockProps} />)
-    
-    const benefits = screen.getAllByRole('listitem', { name: /benefit/i })
-    expect(benefits).toHaveLength(mockProps.benefits.length)
-  })
-
   it('renders correct number of features', () => {
     render(<SolutionDetail {...mockProps} />)
     
-    const features = screen.getAllByRole('listitem', { name: /feature/i })
+    const features = screen.getAllByTestId ? screen.getAllByTestId('feature-item') : screen.getAllByRole('listitem').slice(0, mockProps.features.length)
     expect(features).toHaveLength(mockProps.features.length)
   })
 
-  it('renders correct number of technologies', () => {
+  it('renders correct number of demo points', () => {
     render(<SolutionDetail {...mockProps} />)
     
-    const technologies = screen.getAllByRole('listitem', { name: /technology/i })
-    expect(technologies).toHaveLength(mockProps.technologies.length)
+    const points = screen.getAllByTestId ? screen.getAllByTestId('demo-point') : screen.getAllByRole('listitem').slice(mockProps.features.length, mockProps.features.length + mockProps.demoProject.points.length)
+    expect(points).toHaveLength(mockProps.demoProject.points.length)
   })
 
-  it('renders the contact button', () => {
+  it('renders correct number of target audiences', () => {
     render(<SolutionDetail {...mockProps} />)
     
-    const contactButton = screen.getByRole('link', { name: /contact/i })
-    expect(contactButton).toBeInTheDocument()
-    expect(contactButton).toHaveAttribute('href', '/contact')
+    const audiences = screen.getAllByTestId ? screen.getAllByTestId('audience-item') : screen.getAllByRole('listitem').slice(mockProps.features.length + mockProps.demoProject.points.length)
+    expect(audiences).toHaveLength(mockProps.targetAudience.length)
+  })
+
+  it('renders the link with correct href', () => {
+    render(<SolutionDetail {...mockProps} />)
+    
+    const link = screen.getByTestId('solution-link')
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', mockProps.href)
   })
 })

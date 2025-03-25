@@ -7,6 +7,7 @@ import { CookieBanner } from "@/components/ui/cookie-banner"
 import Script from "next/script"
 import { cn } from "@/lib/utils"
 import { Montserrat, Roboto } from "next/font/google"
+import { UmamiScript } from '@/components/analytics/umami-script'
 
 // Fonction de diagnostic au démarrage de l'application
 function logEnvironmentStatus() {
@@ -96,19 +97,7 @@ export default function RootLayout({
             <CookieBanner />
           </div>
         </ThemeProvider>
-        <Script
-          id="umami-script"
-          strategy="afterInteractive"
-          src="https://umami.darkdatalabs.fr/script.js"
-          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
-          onLoad={() => {
-            console.log('Umami script chargé avec succès');
-            console.log('Umami website ID:', process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID);
-          }}
-          onError={() => {
-            console.error('Erreur lors du chargement du script Umami');
-          }}
-        />
+        <UmamiScript />
       </body>
     </html>
   )

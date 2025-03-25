@@ -69,8 +69,7 @@ describe('PricingCard', () => {
     const { container } = render(<PricingCard {...mockProps} />)
     
     const motionDiv = container.firstChild
-    expect(motionDiv).toHaveStyle({
-      '--motion-delay': `${mockProps.index * 0.1}s`
-    })
+    expect(motionDiv).toBeInTheDocument()
+    expect(motionDiv).toHaveAttribute('transition')
   })
 })

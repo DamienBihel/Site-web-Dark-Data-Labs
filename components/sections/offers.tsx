@@ -13,11 +13,11 @@ export function Offers() {
     {
       id: 1,
       title: "Audit Gratuit",
-      description: "Comprenez ce que l’IA peut faire pour vous.",
+      description: "Comprenez ce que l'IA peut faire pour vous.",
       price: "Gratuit",
       features: [
         "Analyse de vos process",
-        "Opportunités d’automatisation",
+        "Opportunités d'automatisation",
         "Recos concrètes + 30 min de consult",
       ],
       cta: "0€ – Réservez maintenant",
@@ -41,7 +41,7 @@ export function Offers() {
     {
       id: 3,
       title: "Formation IA Pratique",
-      description: "Maîtrisez l’IA pour vos tâches quotidiennes.",
+      description: "Maîtrisez l'IA pour vos tâches quotidiennes.",
       price: "À partir de 500€",
       features: [
         "Formation ciblée (14 h)",
@@ -133,7 +133,7 @@ export function Offers() {
               <div>
                 <AlertTitle className="text-lg font-semibold mb-2 text-[var(--color-light)]">Choisissez votre solution</AlertTitle>
                 <AlertDescription className="text-[var(--color-light)]/80">
-                  Des offres simples. Des résultats mesurables. On s’occupe de tout, de A à Z.
+                  Des offres simples. Des résultats mesurables. On s'occupe de tout, de A à Z.
                 </AlertDescription>
               </div>
             </div>
@@ -188,11 +188,13 @@ export function Offers() {
                           ))}
                         </ul>
                         
-                        <Button 
-                          className="w-full gap-2 hover:scale-105 transition-transform bg-[var(--color-dark)] border border-[var(--color-neon)] text-[var(--color-neon)] hover:bg-[var(--color-neon)]/10" 
-                        >
-                          {offer.cta} <ArrowRight className="h-4 w-4 animate-pulse-slow" />
-                        </Button>
+                        <Link href="#contact-form">
+                          <Button 
+                            className="w-full gap-2 hover:scale-105 transition-transform bg-[var(--color-dark)] border border-[var(--color-neon)] text-[var(--color-neon)] hover:bg-[var(--color-neon)]/10" 
+                          >
+                            {offer.cta} <ArrowRight className="h-4 w-4 animate-pulse-slow" />
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>

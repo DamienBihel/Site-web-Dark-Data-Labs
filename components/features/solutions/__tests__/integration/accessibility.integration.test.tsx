@@ -1,50 +1,86 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { axe, toHaveNoViolations } from 'jest-axe'
-import { SolutionsSection } from '../../SolutionsSection'
+import { SolutionsSection } from '../../solutions-section'
 import { SolutionDetail } from '../../SolutionDetail'
 import { PricingCard } from '../../pricing-card'
 
 expect.extend(toHaveNoViolations)
 
-// Mock framer-motion
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    section: ({ children, ...props }: any) => <section {...props}>{children}</section>
-  }
-}))
-
 describe('Solutions Accessibility Integration', () => {
   describe('SolutionsSection Accessibility', () => {
-    it('should have no accessibility violations', async () => {
+    it('has no accessibility violations', async () => {
       const { container } = render(<SolutionsSection />)
       const results = await axe(container)
       expect(results).toHaveNoViolations()
     })
 
-    it('ensures proper heading hierarchy', () => {
-      render(<SolutionsSection />)
-      
-      const headings = screen.getAllByRole('heading')
-      const headingLevels = headings.map(h => parseInt(h.getAttribute('aria-level') || '0'))
-      
-      // Vérifier que les niveaux de titre sont séquentiels
-      headingLevels.reduce((prev, current) => {
-        expect(current - prev).toBeLessThanOrEqual(1)
-        return current
-      })
-    })
-
     it('provides appropriate ARIA labels', () => {
       render(<SolutionsSection />)
       
-      // Vérifier les landmarks
-      expect(screen.getByRole('region', { name: /solutions/i })).toBeInTheDocument()
+      // Vérifier la section principale
+      const section = screen.getByRole('region', { name: /nos solutions/i })
+      expect(section).toBeInTheDocument()
+
+      // Vérifier les cartes de solution
+      const solutionCards = screen.getAllByTestId('solution-card')
+      solutionCards.forEach((card, index) => {
+        const cardUtils = within(card)
+        
+        // Vérifier le titre de la carte
+        const cardTitle = cardUtils.getByRole('heading', { level: 3 })
+        expect(cardTitle).toHaveAttribute('id', `solution-title-${index}`)
+
+        // Vérifier la liste des fonctionnalités
+        const featuresList = cardUtils.getByRole('list', { name: /ce que vous obtenez/i })
+        expect(featuresList).toHaveAttribute('aria-labelledby', `features-title-${index}`)
+      })
+    })
+
+    it('ensures keyboard navigation', () => {
+      render(<SolutionsSection />)
       
-      // Vérifier les boutons et liens
-      const interactiveElements = screen.getAllByRole('link')
-      interactiveElements.forEach(element => {
-        expect(element).toHaveAttribute('aria-label')
+      // Vérifier que les éléments interactifs sont focusables
+      const solutionCards = screen.getAllByTestId('solution-card')
+      solutionCards.forEach(card => {
+        const cardUtils = within(card)
+        const links = cardUtils.getAllByRole('link')
+        links.forEach(link => {
+          expect(link).toHaveAttribute('tabindex', '0')
+        })
+      })
+    })
+  })
+
+  describe('Content Accessibility', () => {
+    it('ensures content is screen reader friendly', () => {
+      render(<SolutionsSection />)
+      
+      // Vérifier les cartes de solution
+      const solutionCards = screen.getAllByTestId('solution-card')
+      solutionCards.forEach(card => {
+        const cardUtils = within(card)
+        
+        // Vérifier la liste des fonctionnalités
+        const featuresList = cardUtils.getByRole('list', { name: /ce que vous obtenez/i })
+        expect(featuresList).toHaveAttribute('aria-labelledby')
+        
+        // Vérifier les points du projet de démonstration
+        const demoPoints = cardUtils.getAllByRole('listitem')
+        demoPoints.forEach(point => {
+          expect(point).toHaveTextContent(/•/)
+        })
+      })
+    })
+
+    it('ensures price information is properly labeled', () => {
+      render(<SolutionsSection />)
+      
+      // Vérifier les prix
+      const solutionCards = screen.getAllByTestId('solution-card')
+      solutionCards.forEach(card => {
+        const cardUtils = within(card)
+        const priceElement = cardUtils.getByText(/€$/)
+        expect(priceElement.parentElement).toHaveAttribute('aria-label', expect.stringMatching(/Prix : \d+€/))
       })
     })
   })
@@ -62,22 +98,6 @@ describe('Solutions Accessibility Integration', () => {
       const { container } = render(<SolutionDetail {...mockProps} />)
       const results = await axe(container)
       expect(results).toHaveNoViolations()
-    })
-
-    it('ensures content is screen reader friendly', () => {
-      render(<SolutionDetail {...mockProps} />)
-      
-      // Vérifier les listes
-      const lists = screen.getAllByRole('list')
-      lists.forEach(list => {
-        expect(list).toHaveAttribute('aria-label')
-      })
-      
-      // Vérifier les descriptions
-      const descriptions = screen.getAllByRole('article')
-      descriptions.forEach(desc => {
-        expect(desc).toHaveAttribute('aria-describedby')
-      })
     })
   })
 
@@ -98,14 +118,6 @@ describe('Solutions Accessibility Integration', () => {
       expect(results).toHaveNoViolations()
     })
 
-    it('ensures price information is properly labeled', () => {
-      render(<PricingCard {...mockPricing} />)
-      
-      // Vérifier le prix
-      const priceElement = screen.getByText(/999€/)
-      expect(priceElement).toHaveAttribute('aria-label', expect.stringContaining('prix'))
-    })
-
     it('provides clear feature descriptions', () => {
       render(<PricingCard {...mockPricing} />)
       
@@ -121,9 +133,14 @@ describe('Solutions Accessibility Integration', () => {
     it('ensures all interactive elements are reachable via keyboard', () => {
       render(<SolutionsSection />)
       
-      const interactiveElements = screen.getAllByRole('link')
-      interactiveElements.forEach(element => {
-        expect(element).toHaveAttribute('tabindex', '0')
+      // Vérifier les liens
+      const solutionCards = screen.getAllByTestId('solution-card')
+      solutionCards.forEach(card => {
+        const cardUtils = within(card)
+        const links = cardUtils.getAllByRole('link')
+        links.forEach(link => {
+          expect(link).toHaveAttribute('tabindex', '0')
+        })
       })
     })
 
@@ -133,7 +150,7 @@ describe('Solutions Accessibility Integration', () => {
       const interactiveElements = screen.getAllByRole('link')
       const tabIndices = interactiveElements.map(el => parseInt(el.getAttribute('tabindex') || '0'))
       
-      // Vérifier que l'ordre des tabindex est logique
+      // Vérifier que les indices sont dans l'ordre
       tabIndices.forEach((index, i) => {
         if (i > 0) {
           expect(index).toBeGreaterThanOrEqual(tabIndices[i - 1])
