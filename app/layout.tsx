@@ -1,14 +1,12 @@
 import './globals.css'
 import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Montserrat, Roboto } from "next/font/google"
-import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { CookieBanner } from "@/components/ui/cookie-banner"
 import Script from "next/script"
+import { cn } from "@/lib/utils"
+import { Montserrat, Roboto } from "next/font/google"
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -64,12 +62,10 @@ export default function RootLayout({
             <CookieBanner />
           </div>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
         <Script
           id="umami-script"
           strategy="afterInteractive"
-          src="https://analytics.umami.is/script.js"
+          src="https://umami.darkdatalabs.fr/script.js"
           data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
         />
       </body>

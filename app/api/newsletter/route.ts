@@ -4,6 +4,9 @@ export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
+    console.log('Traitement de l\'inscription newsletter pour:', email);
+    console.log('URL Mautic configurée:', process.env.MAUTIC_BASE_URL);
+
     if (!email) {
       return NextResponse.json(
         { error: 'Email requis' },
@@ -11,82 +14,147 @@ export async function POST(request: Request) {
       );
     }
 
-    // Ajouter le contact à une liste Brevo
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': process.env.BREVO_API_KEY!,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        listIds: [22], // ID de la liste newsletter dans Brevo
-        updateEnabled: true, // Met à jour le contact s'il existe déjà
-        attributes: {
-          SIGNUP_DATE: new Date().toISOString(),
-          SOURCE: 'website_newsletter'
-        }
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Erreur lors de l\'inscription');
+    // Vérifier que les variables d'environnement Mautic sont définies
+    if (!process.env.MAUTIC_BASE_URL || !process.env.MAUTIC_USERNAME || !process.env.MAUTIC_PASSWORD || !process.env.MAUTIC_FORM_ID) {
+      console.error('Configuration Mautic incomplète:', {
+        baseUrl: !!process.env.MAUTIC_BASE_URL,
+        username: !!process.env.MAUTIC_USERNAME,
+        password: !!process.env.MAUTIC_PASSWORD,
+        formId: !!process.env.MAUTIC_FORM_ID
+      });
+      throw new Error('Configuration Mautic incomplète');
     }
 
-    // Envoyer un email de confirmation
-    await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'api-key': process.env.BREVO_API_KEY!,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: {
-          name: 'Damien de Dark Data Labs',
-          email: 'damien.bihel@darkdatalabs.fr'
+    // Authentification auprès de Mautic pour obtenir un token
+    try {
+      console.log('Tentative d\'authentification Mautic...');
+      const authResponse = await fetch(`${process.env.MAUTIC_BASE_URL}/oauth/v2/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        to: [{
-          email: email
-        }],
-        subject: 'Bienvenue chez Dark Data Labs – Transformons vos données en leviers de performance !',
-        htmlContent: `
-          <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-            <p>Bonjour,</p>
-            
-            <p>Bienvenue dans la communauté Dark Data Labs ! 🚀</p>
-            
-            <p>Tu viens de faire un premier pas vers une utilisation plus stratégique et efficace de tes données. Chez Dark Data Labs, notre mission est claire : rendre l'analyse de données accessible, simple et impactante pour les PME/TPE.</p>
-            
-            <p>✨ Voici ce que tu trouveras dans notre newsletter :</p>
-            <ul>
-              <li>Des astuces pratiques pour maîtriser tes données.</li>
-              <li>Des idées d'automatisations pour gagner du temps et réduire les erreurs.</li>
-              <li>Des exemples concrets d'entreprises qui boostent leur rentabilité grâce à l'analyse de données.</li>
-            </ul>
-            
-            <p>🛠️ Envie d'en savoir plus ?</p>
-            <p>Chaque mail que tu recevras est pensé pour t'apporter une vraie valeur ajoutée. Pas de blabla, que du concret pour t'aider à mieux piloter ton activité.</p>
-            
-            <p>Si tu as des questions, des défis spécifiques, ou si tu veux simplement échanger sur l'automatisation et l'analyse de données, réponds à cet email. On est là pour ça, et toujours avec le sourire (virtuel 😄).</p>
-            
-            <p>On se retrouve très vite pour découvrir comment libérer tout le potentiel de tes données. 💡</p>
-            
-            <p>À bientôt,<br>
-            Damien</p>
-            
-            <p><a href="https://darkdatalabs.fr/" style="color: #00FF85; text-decoration: none;">https://darkdatalabs.fr/</a></p>
-          </div>
-        `,
-      }),
-    });
+        body: new URLSearchParams({
+          'grant_type': 'password',
+          'client_id': 'mauticoauth',
+          'client_secret': 'mauticoauth',
+          'username': process.env.MAUTIC_USERNAME!,
+          'password': process.env.MAUTIC_PASSWORD!,
+        }).toString(),
+      });
 
-    return NextResponse.json(
-      { message: 'Inscription réussie' },
-      { status: 200 }
-    );
+      if (!authResponse.ok) {
+        const errorText = await authResponse.text();
+        console.error('Échec de l\'authentification Mautic:', {
+          status: authResponse.status,
+          statusText: authResponse.statusText,
+          responseText: errorText
+        });
+        throw new Error(`Échec de l'authentification Mautic: ${authResponse.status} ${authResponse.statusText}`);
+      }
+
+      const authData = await authResponse.json();
+      const accessToken = authData.access_token;
+      console.log('Authentification Mautic réussie');
+
+      // Vérifier si le contact existe déjà
+      console.log('Vérification de l\'existence du contact...');
+      const checkContactResponse = await fetch(
+        `${process.env.MAUTIC_BASE_URL}/api/contacts?search=${encodeURIComponent(email)}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!checkContactResponse.ok) {
+        const errorText = await checkContactResponse.text();
+        console.error('Erreur lors de la vérification du contact:', {
+          status: checkContactResponse.status,
+          statusText: checkContactResponse.statusText,
+          responseText: errorText
+        });
+        throw new Error('Erreur lors de la vérification du contact');
+      }
+
+      const contactData = await checkContactResponse.json();
+      let contactId;
+
+      // Si le contact existe, récupérer son ID, sinon en créer un nouveau
+      if (contactData.total > 0) {
+        console.log('Contact existant trouvé');
+        // Récupérer le premier contact correspondant
+        contactId = Object.keys(contactData.contacts)[0];
+      } else {
+        console.log('Création d\'un nouveau contact...');
+        // Créer un nouveau contact
+        const createContactResponse = await fetch(`${process.env.MAUTIC_BASE_URL}/api/contacts/new`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            firstname: '',
+            lastname: '',
+            tags: ['website_newsletter'],
+          }),
+        });
+
+        if (!createContactResponse.ok) {
+          const errorText = await createContactResponse.text();
+          console.error('Erreur lors de la création du contact:', {
+            status: createContactResponse.status,
+            statusText: createContactResponse.statusText,
+            responseText: errorText
+          });
+          throw new Error('Erreur lors de la création du contact');
+        }
+
+        const newContactData = await createContactResponse.json();
+        contactId = newContactData.contact.id;
+        console.log('Nouveau contact créé avec ID:', contactId);
+      }
+
+      // Soumettre le contact au formulaire Mautic
+      console.log('Soumission au formulaire...');
+      const formId = process.env.MAUTIC_FORM_ID;
+      const submitFormResponse = await fetch(
+        `${process.env.MAUTIC_BASE_URL}/api/forms/${formId}/submissions/action/submit`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mauticform: {
+            formId: formId,
+            email: email,
+            source: 'website_newsletter',
+            signup_date: new Date().toISOString(),
+          },
+        }),
+      });
+
+      if (!submitFormResponse.ok) {
+        const errorText = await submitFormResponse.text();
+        console.error('Erreur lors de la soumission du formulaire:', {
+          status: submitFormResponse.status,
+          statusText: submitFormResponse.statusText,
+          responseText: errorText
+        });
+        throw new Error('Erreur lors de la soumission du formulaire');
+      }
+
+      console.log('Inscription newsletter réussie pour:', email);
+      return NextResponse.json(
+        { message: 'Inscription réussie' },
+        { status: 200 }
+      );
+    } catch (fetchError: any) {
+      console.error('Erreur réseau lors des requêtes Mautic:', fetchError);
+      throw fetchError;
+    }
   } catch (error: any) {
     console.error('Erreur lors de l\'inscription à la newsletter:', error);
     return NextResponse.json(
