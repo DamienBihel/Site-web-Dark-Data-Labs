@@ -67,6 +67,13 @@ export default function RootLayout({
           strategy="afterInteractive"
           src="https://umami.darkdatalabs.fr/script.js"
           data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          onLoad={() => {
+            console.log('Umami script chargé avec succès');
+            console.log('Umami website ID:', process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID);
+          }}
+          onError={() => {
+            console.error('Erreur lors du chargement du script Umami');
+          }}
         />
       </body>
     </html>

@@ -8,6 +8,16 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import { useToast } from "@/components/ui/use-toast"
+
+// Déclaration pour Umami
+declare global {
+  interface Window {
+    umami?: {
+      track: (eventName: string, eventData?: Record<string, string | number | boolean>) => void;
+    };
+  }
+}
 
 const navigation = {
   sections: [
@@ -56,17 +66,19 @@ const navigation = {
 export function Footer() {
   const [email, setEmail] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
   const [consent, setConsent] = useState(false)
+  const { toast } = useToast()
 
   const handleNewsletterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!consent) {
-      alert("Veuillez accepter la politique de confidentialité pour continuer.")
+      toast({
+        title: "Consentement requis",
+        description: "Veuillez accepter la politique de confidentialité pour continuer."
+      })
       return
     }
     setIsSubmitting(true)
-    setStatus("idle")
 
     try {
       const response = await fetch('/api/newsletter', {
@@ -81,12 +93,28 @@ export function Footer() {
         throw new Error('Erreur lors de l\'inscription');
       }
 
-      setStatus("success")
+      // Traquer l'événement d'inscription
+      if (typeof window !== 'undefined' && window.umami) {
+        window.umami.track('newsletter_signup', { email });
+        console.log('[DEBUG] Umami - Événement newsletter_signup tracké avec succès');
+      } else {
+        console.warn('[DEBUG] Umami - Objet umami non disponible pour le tracking');
+        console.log('[DEBUG] Umami - window.umami présent?:', !!window.umami);
+      }
+
+      toast({
+        title: "Inscription réussie",
+        description: "Merci pour votre inscription à notre newsletter !"
+      })
+      
       setEmail("")
       setConsent(false)
     } catch (error) {
       console.error('Erreur:', error)
-      setStatus("error")
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'inscription. Veuillez réessayer."
+      })
     }
 
     setIsSubmitting(false)
@@ -217,13 +245,6 @@ export function Footer() {
                   J'accepte de recevoir la newsletter et la <Link href="/privacy" className="text-[#00FF85] hover:underline">politique de confidentialité</Link>
                 </label>
               </div>
-              
-              {status === "success" && (
-                <p className="text-green-500 text-sm">Merci pour votre inscription !</p>
-              )}
-              {status === "error" && (
-                <p className="text-red-500 text-sm">Une erreur est survenue. Veuillez réessayer.</p>
-              )}
             </form>
           </motion.div>
         </div>

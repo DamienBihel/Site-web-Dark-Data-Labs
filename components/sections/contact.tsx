@@ -6,13 +6,14 @@ import { Card } from "@/components/ui/card"
 import { Mail, Phone, ArrowRight, Lock, Calendar, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import emailjs from '@emailjs/browser'
 
 const contactInfo = [
   {
@@ -72,27 +73,74 @@ export function Contact() {
     setError(null)
 
     try {
-      // Simule un envoi réussi (remplacer par un véritable appel API)
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      // Vérification des variables d'environnement
+      if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+        throw new Error("Configuration EmailJS incomplète");
+      }
+
+      console.log("[DEBUG] Configuration EmailJS:", {
+        serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        publicKey: `${process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY?.substring(0, 4)}...` // Affiche seulement les premiers caractères pour la sécurité
+      });
+
+      console.log("[DEBUG] Données du formulaire à envoyer:", {
+        from_name: data.name,
+        from_email: data.email,
+        company: data.company || 'Non spécifié',
+        phone: data.phone || 'Non spécifié',
+        message: data.message.substring(0, 20) + '...' // Tronquer le message pour la confidentialité
+      });
+
+      console.log("[DEBUG] Tentative d'envoi de l'email via EmailJS...");
+
+      // Envoi de l'email via EmailJS (pour la version 4.x)
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          company: data.company || 'Non spécifié',
+          phone: data.phone || 'Non spécifié',
+          message: data.message,
+        },
+        {
+          publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+        }
+      );
+
+      console.log("Résultat de l'envoi:", result);
+      console.log("[DEBUG] EmailJS - Envoi réussi avec statut:", result.status);
+      console.log("[DEBUG] EmailJS - Détails de la réponse:", JSON.stringify(result));
+
       setFormStatus("success")
       toast({
         title: 'Message envoyé',
         description: 'Nous vous répondrons dans les plus brefs délais.',
       })
       reset()
-    } catch (error) {
-      console.error('Erreur:', error)
+    } catch (err: any) {
+      console.error('Erreur détaillée lors de l\'envoi:', err)
+      console.error('[DEBUG] EmailJS - Type d\'erreur:', typeof err);
+      console.error('[DEBUG] EmailJS - Message d\'erreur:', err?.message);
+      console.error('[DEBUG] EmailJS - Stack trace:', err?.stack);
+      
+      if (err?.status) {
+        console.error('[DEBUG] EmailJS - Statut de l\'erreur:', err.status);
+      }
+      
       setFormStatus("error")
-      setError('Une erreur est survenue. Veuillez réessayer plus tard.')
+      setError(err?.message || 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard.')
       toast({
-        title: 'Une erreur est survenue',
-        description: 'Veuillez réessayer plus tard.',
-        variant: 'destructive',
+        title: 'Erreur',
+        description: 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard.',
       } as any)
+    } finally {
+      setIsSubmitting(false)
     }
-
-    setIsSubmitting(false)
   }
 
   return (
