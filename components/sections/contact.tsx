@@ -13,7 +13,17 @@ import * as z from 'zod'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
-import emailjs from '@emailjs/browser'
+
+// Importation dynamique avec gestion d'erreur
+let emailjs: any;
+try {
+  // Essayer d'importer emailjs
+  emailjs = require('@emailjs/browser');
+  console.log("[DEBUG] EmailJS importé avec succès");
+} catch (error) {
+  console.error("[DEBUG] Erreur lors de l'importation d'EmailJS:", error);
+  // Si l'importation échoue, emailjs reste undefined
+}
 
 const contactInfo = [
   {
@@ -73,6 +83,12 @@ export function Contact() {
     setError(null)
 
     try {
+      // Vérification que emailjs est disponible
+      if (!emailjs) {
+        console.error("[DEBUG] EmailJS n'est pas disponible - échec de l'importation");
+        throw new Error("Service d'envoi d'email indisponible. Veuillez contacter directement contact@darkdatalabs.fr");
+      }
+      
       // Vérification des variables d'environnement
       if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
           !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 

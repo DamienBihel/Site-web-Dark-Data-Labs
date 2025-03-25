@@ -8,6 +8,40 @@ import Script from "next/script"
 import { cn } from "@/lib/utils"
 import { Montserrat, Roboto } from "next/font/google"
 
+// Fonction de diagnostic au démarrage de l'application
+function logEnvironmentStatus() {
+  if (typeof window === 'undefined') {
+    // Exécuté uniquement côté serveur
+    console.log("[DEPLOYMENT] ========== DIAGNOSTIC DE DÉPLOIEMENT ==========");
+    console.log("[DEPLOYMENT] Next.js version:", require('next/package.json').version);
+    console.log("[DEPLOYMENT] Node.js version:", process.version);
+    
+    // Vérification des variables d'environnement critiques (sans exposer les valeurs)
+    console.log("[DEPLOYMENT] Variables d'environnement :");
+    console.log("[DEPLOYMENT] - NEXT_PUBLIC_EMAILJS_SERVICE_ID présent:", !!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+    console.log("[DEPLOYMENT] - NEXT_PUBLIC_EMAILJS_TEMPLATE_ID présent:", !!process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
+    console.log("[DEPLOYMENT] - NEXT_PUBLIC_EMAILJS_PUBLIC_KEY présent:", !!process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+    console.log("[DEPLOYMENT] - NEXT_PUBLIC_UMAMI_WEBSITE_ID présent:", !!process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID);
+    console.log("[DEPLOYMENT] - MAUTIC_BASE_URL présent:", !!process.env.MAUTIC_BASE_URL);
+    console.log("[DEPLOYMENT] - MAUTIC_USERNAME présent:", !!process.env.MAUTIC_USERNAME);
+    console.log("[DEPLOYMENT] - MAUTIC_PASSWORD présent:", !!process.env.MAUTIC_PASSWORD);
+    console.log("[DEPLOYMENT] - MAUTIC_FORM_ID présent:", !!process.env.MAUTIC_FORM_ID);
+    console.log("[DEPLOYMENT] ==============================================");
+
+    // Vérifier les modules installés
+    try {
+      require('@emailjs/browser');
+      console.log("[DEPLOYMENT] Module @emailjs/browser correctement chargé");
+    } catch (e) {
+      console.error("[DEPLOYMENT] ERREUR: Module @emailjs/browser non trouvé");
+      console.error("[DEPLOYMENT] Détails:", e);
+    }
+  }
+}
+
+// Appel de la fonction de diagnostic
+logEnvironmentStatus();
+
 const montserrat = Montserrat({ 
   subsets: ['latin'],
   variable: '--font-montserrat',
