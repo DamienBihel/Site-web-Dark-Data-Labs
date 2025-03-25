@@ -28,6 +28,8 @@
     "testing-library/no-wait-for-multiple-assertions": "warn",
     "testing-library/render-result-naming-convention": "warn",
     "testing-library/no-unnecessary-act": "warn",
+    "testing-library/no-manual-cleanup": "warn",
+    "react/display-name": "warn",
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "warn",
     "jest/no-identical-title": "warn",
